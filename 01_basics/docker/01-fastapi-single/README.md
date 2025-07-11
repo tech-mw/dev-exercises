@@ -1,7 +1,6 @@
 # FastAPI Docker 最小サンプル
 
-FastAPIアプリをPython公式イメージでDocker化する最小構成例です。  
-本番と同じPythonバージョンを固定し、依存の差分を防止します。
+FastAPIアプリをPython公式イメージでDocker化する最小構成例です。
 
 ---
 
@@ -65,3 +64,4 @@ docker rmi fastapi-docker
 ## 補足
 - ENV PYTHONDONTWRITEBYTECODE=1 を指定し、.pycファイルや__pycache__を生成しないようにしています。
 - これにより不要なキャッシュを含まないクリーンな本番用イメージを作成できます。
+- このDockerイメージはPython 3.13に固定しているため差分は出ませんが、ローカル環境とDockerfileでPythonのバージョンが異なる場合、pip install時に差分が出ることがあります。

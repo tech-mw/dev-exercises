@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+
+# Environment files
+.env
+
+# Editor settings
+.vscode/
+.idea/
+
+# macOS metadata
+.DS_Store
+
+# Optional: other OS-specific files
+Thumbs.db

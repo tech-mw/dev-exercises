@@ -11,6 +11,8 @@ venv/
 # Environment files
 .env
 
+node_modules/
+
 # Editor settings
 .vscode/
 .idea/

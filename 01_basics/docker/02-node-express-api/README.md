@@ -25,13 +25,13 @@ PJ
 ---
 ## 仮想環境作成+active
 ```bash
-python3 -m venv venv
+python3 -m venv venv && \
 source ./venv/bin/activate
 ```
 
 ## マウント対象dic作成+移動
 ```bash
-mkdir src
+mkdir src && \
 cd src
 ```
 ## npm初期化 + express、nodomonインストール

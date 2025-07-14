@@ -11,12 +11,12 @@ FastAPIアプリをPython公式イメージでDocker化する最小構成例で�
 ---
 
 ## ファイル構成
-```
-.
+<pre>
+PJ
 ├── Dockerfile
 ├── main.py
 └── requirements.txt
-```
+</pre>
 
 ---
 

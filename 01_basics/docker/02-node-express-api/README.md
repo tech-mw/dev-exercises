@@ -12,8 +12,7 @@ Node.js（Expressアプリ）を公式NodeイメージでDocker化する最小�
 ---
 
 ## ファイル構成
-```
-
+<pre>
 PJ
 ├─── src（マウント対象）
 │     ├── Dockerfile
@@ -21,7 +20,7 @@ PJ
 │     ├── package-lock.json
 │     └── package.json
 └─── venv
-```
+</pre>
 
 ---
 ## 仮想環境作成+active
@@ -38,8 +37,8 @@ cd src
 ## npm初期化 + express、nodomonインストール
 - nodemonは開発環境化でホットリロードするため
 ```bash
-npm init -y
-npm install express
+npm init -y && \
+npm install express && \
 npm install --save-dev nodemon
 ```
 
@@ -73,6 +72,6 @@ docker exec -it node-express-app-container bash -c "ls"
 ## 停止+削除
 - 起動時に`--rm`指定なのでコンテナ停止時にコンテナ削除もされる
 ```bash
-docker stop node-express-app-container
+docker stop node-express-app-container && \
 docker rmi node-express-app
 ```

@@ -29,7 +29,7 @@ python3 -m venv venv && \
 source ./venv/bin/activate
 ```
 
-## マウント対象dic作成+移動
+## マウント対象ディレクトリ作成+移動
 ```bash
 mkdir src && \
 cd src

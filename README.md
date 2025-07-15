@@ -29,6 +29,11 @@ PJ/
   - 開発用にnodemonホットリロード対応
   - バインドマウントでホストソースを即反映
   - venvなど不要ファイルを含めない構造を推奨
+#### 1-1-3. [03-init-mysql](./01_basics/docker/03-init-mysql/README.md)
+- Mysqlを公式MysqlイメージでDocker化
+- 特徴
+  - 初期化用SQLをinitdb.dに置くだけで自動実行
+  - ホスト側のSQLファイルをバインドマウントして管理
 ## 2. 02_environments
 - 環境構築系セクション（複数サービス連携やCI/CDなど）
 ## 3. 03_webapps

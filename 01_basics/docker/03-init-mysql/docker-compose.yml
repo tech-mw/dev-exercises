@@ -1,0 +1,10 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: test_mysql_container
+    volumes:
+      # ホスト側の initdb.d ディレクトリ配下にある .sql、.sh、.sql.gz ファイルを
+      # コンテナ内の /docker-entrypoint-initdb.d にマウントして、その中身をコンテナ初回起動時に自動実行
+      - ./initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root

@@ -61,6 +61,6 @@ docker rmi build_app redis
   - `docker-compose build`
 - redisコンテナだけ起動
   - `docker-compose up -d redis`
-- サービス名指定でそのイメージを使ってコンテナ起動でデータ書込可能
+- サービス名指定で特定イメージのみを使ってコンテナ起動+データ書込可能
   - 今回でいえば↓でsanple_redis（redisデータ書込）が実行される
   - `docker-compose run --rm build_app`

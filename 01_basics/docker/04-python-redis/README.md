@@ -55,3 +55,12 @@ docker compose down
 ```bash
 docker rmi build_app redis
 ```
+
+### 補足
+- docker composeでbuildのみ
+  - `docker-compose build`
+- redisコンテナだけ起動
+  - `docker-compose up -d redis`
+- サービス名指定でそのイメージを使ってコンテナ起動でデータ書込可能
+  - 今回でいえば↓でsanple_redis（redisデータ書込）が実行される
+  - `docker-compose run --rm build_app`

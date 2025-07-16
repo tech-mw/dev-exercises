@@ -34,6 +34,10 @@ PJ/
 - 特徴
   - 初期化用SQLをinitdb.dに置くだけで自動実行
   - ホスト側のSQLファイルをバインドマウントして管理
+#### 1-1-4. [04-python-redis](./01_basics/docker/04-python-redis/README.md)
+- Python+Redis公式イメージでDocker化
+- 特徴
+  - redisコンテナ作成時に初期データ登録
 ## 2. 02_environments
 - 環境構築系セクション（複数サービス連携やCI/CDなど）
 ## 3. 03_webapps

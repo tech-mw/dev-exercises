@@ -10,7 +10,9 @@ PJ/
 ├── 01_basics/ 
 │    └── docker
 │        ├── 01-fastapi-single
-│        └── 02_environments
+│        ├── 02_environments
+│        ├── 03-init-mysql
+│        └── 04-python-redis
 ├── 02_environments/
 └── 03_webapps/
 </pre>

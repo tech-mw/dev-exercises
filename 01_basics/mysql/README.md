@@ -1,4 +1,4 @@
-# Mysql開発環境はMysql（docker） × SequelAceを想定
+# Mysql開発環境はMysql(docker) × SequelAceを想定
 ## 環境
 - Mysql: 8.0
   - Mysqlはバージョンによって認証プラグインが異なるため注意

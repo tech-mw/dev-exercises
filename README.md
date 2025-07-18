@@ -20,7 +20,7 @@ PJ/
 ├── 02_environments/
 └── 03_webapps/
 </pre>
-
+---
 ## 1. 01_basics
 - python、dockerなど最小構成を通して仕組みを体系的に実演するセクション
 
@@ -45,12 +45,6 @@ PJ/
 - Python+Redis公式イメージでDocker化
 - 特徴
   - redisコンテナ作成時に初期データ登録
-## 2. 02_environments
-- 環境構築系セクション（複数サービス連携やCI/CDなど）
-## 3. 03_webapps
-- Webアプリ開発セクション
-
----
 
 ### 1-2. git
 #### 1-2-1. [01-detached-non-fast-forward](01_basics/git/01-detached-non-fast-forward/README.md)
@@ -64,4 +58,9 @@ PJ/
 - 特徴
   - HEADの仕組みと挙動を理解するために、意図的に detached HEAD × fast-forward にして検証
   - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）
-
+---
+## 2. 02_environments
+- 環境構築系セクション（複数サービス連携やCI/CDなど）
+---
+## 3. 03_webapps
+- Webアプリ開発セクション

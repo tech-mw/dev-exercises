@@ -136,11 +136,11 @@ A---B---C---------M   ← main（HEAD）, origin/HEAD, origin/main
          \-----D
 M：12e1549（mergeコミット。「Merge origin/main into local main」）
 </pre>
-[--no-rebase実行前]
+[--no-rebase実行前]  
 ![terminal上での表示](images/terminal07.png)
 ![SourceTree上での表示](images/source_tree07.png)
 
-[--no-rebase実行後]
+[--no-rebase実行後]  
 ![terminal上での表示](images/terminal08.png)
 ![SourceTree上での表示](images/source_tree08.png)
 

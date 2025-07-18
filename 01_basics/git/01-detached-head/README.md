@@ -1,25 +1,25 @@
-# HEAD分離（detached HEAD）状態の動作検証
+# detached HEAD状態の動作検証まとめ
 ## 検証目的
-- HEADの仕組みと挙動を理解するために、意図的に HEAD分離状態 を作成 
+- HEADの仕組みと挙動を理解するために、意図的に detached HEAD状態 を作成 
 - TerminalとSourceTreeでの表示の違いを観察 
 - 実務で使う機会は少ないが、Git内部の動き理解のために有益 
-- 「意図的にHEAD分離」「git push origin HEAD:main」は実務では稀だと思います（今回はdetached HEAD を検証するため）
+- 「意図的にdetached HEAD」「git push origin HEAD:main」は実務では稀だと思います（今回はdetached HEAD を検証するため）
 
 ## 検証内容
 - 通常の main でコミット → push 
-- HEAD~0 に checkout（HEAD分離状態） → その状態でファイル更新 → commit 
-- git push origin HEAD:main により、mainブランチをHEAD分離状態で上書き 
+- HEAD~0 に checkout（detached HEAD状態） → その状態でファイル更新 → commit 
+- git push origin HEAD:main により、mainブランチをdetached HEAD状態で上書き 
 - main に戻って再度 commit（ローカルとリモートが分岐） 
 - git push による non-fast-forward エラーを確認 
-- git pull --no-rebase → コンフリクト解消 → マージコミットで履歴統合
+- git pull --no-rebase → コンフリクト解消 → mergeコミットで履歴統合
 
 ## detached HEAD とは
 HEAD がブランチではなくコミット（もしくはタグ）を直接指している状態
 
 ## --no-rebase
-今回は「履歴を直線化せず、マージコミットとして分岐を可視化したまま統合」する方法として –no‑rebase を採用しました
+今回は「履歴を直線化せず、mergeコミットとして分岐を可視化したまま統合」する方法として –no‑rebase を採用しました
 
-## HEAD分離（detach）〜 分岐 〜 マージで統合
+## detached HEAD 〜 分岐 〜 mergeで統合
 ### ファイル作成 + add + commit
 1. `$ echo "local" > file.txt`  
 2. `$ git add .`  
@@ -42,7 +42,7 @@ HEAD → main、origin/HEAD, origin/main
 ![terminal上での表示](images/terminal02.png)
 ![SourceTree上での表示](images/source_tree02.png)
 
-### HEAD分離（detach） + HEADでファイル更新 + add + commit
+### detached HEAD + HEADでファイル更新 + add + commit
 
 1. `$ git checkout HEAD~0 # 現在の HEAD が指しているコミットに そのままチェックアウト`
 2. `$ echo "local（HEAD） update" >> file.txt`  
@@ -136,11 +136,11 @@ A---B---C---------M   ← main（HEAD）, origin/HEAD, origin/main
          \-----D
 M：12e1549（mergeコミット。「Merge origin/main into local main」）
 </pre>
-[--no-rebase実行前]  
+[--no-rebase実行前]
 ![terminal上での表示](images/terminal07.png)
 ![SourceTree上での表示](images/source_tree07.png)
 
-[--no-rebase実行後]  
+[--no-rebase実行後]
 ![terminal上での表示](images/terminal08.png)
 ![SourceTree上での表示](images/source_tree08.png)
 

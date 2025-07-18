@@ -1,4 +1,4 @@
-# detached HEAD状態の動作検証まとめ
+# detached HEAD状態の動作検証：non-fast-forward
 ## 検証目的
 - HEADの仕組みと挙動を理解するために、意図的に detached HEAD状態 を作成 
 - TerminalとSourceTreeでの表示の違いを観察 

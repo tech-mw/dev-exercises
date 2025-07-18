@@ -14,7 +14,8 @@ PJ/
 │    │     ├── 03-init-mysql
 │    │     └── 04-python-redis
 │    ├─── git
-│    │     └── 01-detached-head
+│    │     ├── 01-detached-non-fast-forward
+│    │     └── 02-detached-fast-forward
 │    └─── mysql
 ├── 02_environments/
 └── 03_webapps/
@@ -52,8 +53,15 @@ PJ/
 ---
 
 ### 1-2. git
-#### 1-2-1. [01-detached-head](01_basics/git/01-detached-head/README.md)
-- HEAD分離（detached HEAD）状態の動作検証
+#### 1-2-1. [01-detached-non-fast-forward](01_basics/git/01-detached-non-fast-forward/README.md)
+- detached HEAD状態の動作検証：non-fast-forward
 - 特徴
-  - HEADの仕組みと挙動を理解するために、意図的に HEAD分離状態 を作成 
+  - HEADの仕組みと挙動を理解するために、意図的に detached HEAD × non-fast-forward にして検証 
   - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）
+
+#### 1-2-2. [02-detached-fast-forward](01_basics/git/02-detached-fast-forward/README.md)
+- detached HEAD状態の動作検証：fast-forward
+- 特徴
+  - HEADの仕組みと挙動を理解するために、意図的に detached HEAD × fast-forward にして検証
+  - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）
+

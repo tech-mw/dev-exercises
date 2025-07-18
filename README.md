@@ -8,17 +8,21 @@
 <pre>
 PJ/
 ├── 01_basics/ 
-│    └── docker
-│        ├── 01-fastapi-single
-│        ├── 02_environments
-│        ├── 03-init-mysql
-│        └── 04-python-redis
+│    ├─── docker
+│    │     ├── 01-fastapi-single
+│    │     ├── 02_environments
+│    │     ├── 03-init-mysql
+│    │     └── 04-python-redis
+│    ├─── git
+│    │     └── 01-git-detached-head
+│    └─── mysql
 ├── 02_environments/
 └── 03_webapps/
 </pre>
 
 ## 1. 01_basics
 - python、dockerなど最小構成を通して仕組みを体系的に実演するセクション
+
 ### 1-1. docker
 #### 1-1-1. [01-fastapi-single](./01_basics/docker/01-fastapi-single/README.md)
 - FastAPIをPython公式イメージで最小構成Docker化 
@@ -44,3 +48,12 @@ PJ/
 - 環境構築系セクション（複数サービス連携やCI/CDなど）
 ## 3. 03_webapps
 - Webアプリ開発セクション
+
+---
+
+### 1-2. git
+#### 1-2-1. [01-detached-head](01_basics/git/01-detached-head/README.md)
+- HEAD分離（detached HEAD）状態の動作検証
+- 特徴
+  - HEADの仕組みと挙動を理解するために、意図的に HEAD分離状態 を作成 
+  - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）

@@ -1,7 +1,7 @@
 🛠️**進行中 – 定期的なアップデートと継続的な改善が計画されています**🛠️
 
 ## 利用技術
-[![My Skills](https://skillicons.dev/icons?i=python,django,fastapi,nodejs,express,mysql,docker,redis,bash)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=python,django,fastapi,nodejs,express,mysql,docker,redis,bash,git)](https://skillicons.dev)
 
 ## リポジトリ構成
 

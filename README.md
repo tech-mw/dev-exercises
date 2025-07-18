@@ -14,7 +14,7 @@ PJ/
 │    │     ├── 03-init-mysql
 │    │     └── 04-python-redis
 │    ├─── git
-│    │     └── 01-git-detached-head
+│    │     └── 01-detached-head
 │    └─── mysql
 ├── 02_environments/
 └── 03_webapps/

@@ -1,0 +1,52 @@
+@startuml
+'線の描画方法を直線ではなく直角線へ
+skinparam linetype ortho
+
+entity "users(ユーザー情報)" as users {
+  *id : INT <<PK>>
+  indication_name : VARCHAR(100)
+  email : VARCHAR(100)
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+entity "books(書籍)" as books {
+  *id : INT <<PK>>
+  title : VARCHAR(200)
+  publisher : VARCHAR(100)
+  is_published : INT
+  read_direction : INT
+  price : INT
+  price_tax_inc : INT
+  delivery_start : DATETIME
+  delivery_end : DATETIME
+  page : INT
+}
+
+entity "book_purchases(書籍購入履歴)" as book_purchases {
+  *id : INT <<PK>>
+  user_id : INT <<FK>>
+  book_id : INT <<FK>>
+  title : VARCHAR(200)
+  purchased_at : DATETIME
+  amount : INT
+}
+
+entity "book_views(書籍閲覧履歴)" as book_views {
+  *id : INT <<PK>>
+  user_id : INT <<FK>>
+  book_id : INT <<FK>>
+  title : VARCHAR(200)
+  viewed_at : DATE
+  pages_viewed : INT
+}
+
+' }o--|| の意味：「多：1」リレーション
+' }   : N側を示す
+' o   : 外部キー（FK）を持つ「子」側（N側）
+' ||  : 単一側を示す
+book_purchases }o--|| users : user_id
+book_purchases }o--|| books : book_id
+book_views }o--|| users : user_id
+book_views }o--|| books : book_id
+@enduml

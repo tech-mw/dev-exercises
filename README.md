@@ -17,6 +17,7 @@ PJ/
 │    │     ├── 01-detached-non-fast-forward
 │    │     └── 02-detached-fast-forward
 │    └─── mysql
+│          └── 02-ebook-schema-sql
 ├── 02_environments/
 └── 03_webapps/
 </pre>
@@ -58,6 +59,14 @@ PJ/
 - 特徴
   - HEADの仕組みと挙動を理解するために、意図的に detached HEAD × fast-forward にして検証
   - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）
+
+### 1-3. mysql
+#### 1-3-2. [02-ebook-schema-sql](01_basics/mysql/02-ebook-schema-sql/README.md)
+- Mysqlを公式イメージでDocker化、簡易的な電子書籍アプリを想定したモデルとSQLサンプル
+- 特徴
+  - ユーザー情報、書籍情報、書籍購入履歴、書籍閲覧履歴 4つのテーブルとサンプルデータを流し込み、初期構築
+  - [期間内に特定の出版社を書籍を購入した累計額をユーザー毎に集計]など実務的なSQLサンプル
+
 ---
 ## 2. 02_environments
 - 環境構築系セクション（複数サービス連携やCI/CDなど）

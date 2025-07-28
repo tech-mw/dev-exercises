@@ -17,7 +17,7 @@ PJ/
 │    │     ├── 01-detached-non-fast-forward
 │    │     └── 02-detached-fast-forward
 │    └─── mysql
-│          └── 02-ebook-schema-sql
+│          └── 01-ebook-schema-sql
 ├── 02_environments/
 └── 03_webapps/
 </pre>
@@ -61,7 +61,7 @@ PJ/
   - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）
 
 ### 1-3. mysql
-#### 1-3-2. [02-ebook-schema-sql](01_basics/mysql/02-ebook-schema-sql/README.md)
+#### 1-3-1. [01-ebook-schema-sql](01_basics/mysql/README.md)
 - Mysqlを公式イメージでDocker化、簡易的な電子書籍アプリを想定したモデルとSQLサンプル
 - 特徴
   - ユーザー情報、書籍情報、書籍購入履歴、書籍閲覧履歴 4つのテーブルとサンプルデータを流し込み、初期構築

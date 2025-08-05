@@ -1,42 +1,52 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from .models import SnsBoardModel
 
 
 def signup_func(request):
     """
-    新規登録
+    ユーザー新規登録
     """
-    if request.method == 'POST':
+    if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         try:
             User.objects.create_user(username=username, password=password)
-            return render(request, 'signup.html', {'success': '新規登録に成功しました。'})
+            return render(
+                request, "signup.html", {"success": "新規登録に成功しました。"}
+            )
         except IntegrityError:
-            return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
-    return render(request, 'signup.html', {})
+            return render(
+                request, "signup.html", {"error": "このユーザーは既に登録されています"}
+            )
+    return render(request, "signup.html", {})
 
 
 def login_func(request):
     """
     ログイン
     """
-    if request.method == 'POST':
+    if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('board')
+            return redirect("board")
         else:
-            return render(request, 'login.html', {'context': 'ログインに失敗しました。ユーザー名またはパスワードが正しくありません。'})
-    return render(request, 'login.html', {})
+            return render(
+                request,
+                "login.html",
+                {
+                    "context": "ログインに失敗しました。ユーザー名またはパスワードが正しくありません。"
+                },
+            )
+    return render(request, "login.html", {})
 
 
 def logout_func(request):
@@ -44,23 +54,24 @@ def logout_func(request):
     ログアウト
     """
     logout(request)
-    return redirect('login')
+    return redirect("login")
+
 
 def board_func(request):
     """
-    投稿の一覧表示
+    投稿一覧表示
     """
     # 一覧表示
-    board_list = SnsBoardModel.objects.all().order_by('-created_at')
-    return render(request, 'board.html', {'board_list': board_list})
+    board_list = SnsBoardModel.objects.all().order_by("-created_at")
+    return render(request, "board.html", {"board_list": board_list})
 
 
 def detail_func(request, pk):
     """
-    投稿の詳細表示
+    投稿詳細表示
     """
     board = SnsBoardModel.objects.get(pk=pk)
-    return render(request, 'detail.html', {'board': board})
+    return render(request, "detail.html", {"board": board})
 
 
 def good_func(request, pk):
@@ -70,7 +81,7 @@ def good_func(request, pk):
     board = SnsBoardModel.objects.get(pk=pk)
     board.good += 1
     board.save()
-    return redirect('board')
+    return redirect("board")
 
 
 def read_func(request, pk):
@@ -80,35 +91,43 @@ def read_func(request, pk):
     board = SnsBoardModel.objects.get(pk=pk)
     username = request.user.get_username()
     if username in board.read_users:
-        return redirect('board')
+        return redirect("board")
     board.read += 1
-    users = board.read_users.split(',') if board.read_users else []
+    users = board.read_users.split(",") if board.read_users else []
     if username not in users:
         users.append(username)
-        board.read_users = ','.join(users)
+        board.read_users = ",".join(users)
         board.save()
-    return redirect('board')
+    return redirect("board")
 
 
 class BoardCreate(CreateView):
     """
-    投稿の作成
+    新規投稿作成画面
     """
-    print("___")
-    template_name = 'create.html'
+
+    template_name = "create.html"
     model = SnsBoardModel
-    fields = ('title', 'content', 'author', 'snsimage', 'notice_level')
-    success_url = reverse_lazy('board')
+    fields = ("title", "content", "author", "snsimage", "notice_level")
+    success_url = reverse_lazy("board")
 
 
 class BoardUpdate(UpdateView):
-    template_name = 'update.html'
+    """
+    投稿更新
+    """
+
+    template_name = "update.html"
     model = SnsBoardModel
-    fields = ('title', 'content', 'snsimage', 'notice_level')
-    success_url = reverse_lazy('board')
+    fields = ("title", "content", "snsimage", "notice_level")
+    success_url = reverse_lazy("board")
 
 
 class BoardDelete(DeleteView):
-    template_name = 'delete.html'
+    """
+    投稿削除
+    """
+
+    template_name = "delete.html"
     model = SnsBoardModel
-    success_url = reverse_lazy('board')
+    success_url = reverse_lazy("board")

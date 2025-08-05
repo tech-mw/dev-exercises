@@ -1,9 +1,9 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from .models import SnsBoardModel
 
@@ -38,6 +38,13 @@ def login_func(request):
             return render(request, 'login.html', {'context': 'ログインに失敗しました。ユーザー名またはパスワードが正しくありません。'})
     return render(request, 'login.html', {})
 
+
+def logout_func(request):
+    """
+    ログアウト
+    """
+    logout(request)
+    return redirect('login')
 
 def board_func(request):
     """
@@ -93,3 +100,15 @@ class BoardCreate(CreateView):
     fields = ('title', 'content', 'author', 'snsimage', 'notice_level')
     success_url = reverse_lazy('board')
 
+
+class BoardUpdate(UpdateView):
+    template_name = 'update.html'
+    model = SnsBoardModel
+    fields = ('title', 'content', 'snsimage', 'notice_level')
+    success_url = reverse_lazy('board')
+
+
+class BoardDelete(DeleteView):
+    template_name = 'delete.html'
+    model = SnsBoardModel
+    success_url = reverse_lazy('board')

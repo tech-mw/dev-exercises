@@ -10,7 +10,12 @@ class SnsBoardModel(models.Model):
     title = models.CharField(max_length=200, verbose_name='タイトル')
     content = models.TextField(verbose_name='内容')
     author = models.CharField(max_length=50, verbose_name='投稿者')
-    snsimage = models.ImageField(upload_to='images/', verbose_name='画像', null=True, blank=True)
+    snsimage = models.ImageField(
+        upload_to='images/',
+        verbose_name='画像',
+        null=True,
+        blank=True
+    )
     notice_level = models.CharField(
         max_length=50,
         choices=CHOICE,

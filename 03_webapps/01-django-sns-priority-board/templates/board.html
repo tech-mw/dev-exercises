@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="alert alert-primary" role="alert">
+  <h3>社内SNS</h3>
+</div>
+{% endblock header %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    {% for item in board_list %}
+    <div class="alert alert-{{ item.notice_level }}" role="alert">
+      <p>投稿日：{{ item.created_at | date:"o/n/j" }}</p>
+      <p>投稿者：{{ item.author }}</p>
+      <p>タイトル：<a href="#">{{ item.title }}</a></p>
+      <p>本文：{{ item.content }}</p>
+      <a href="#" class="btn btn-primary disabled">いいね{{ item.good }}件</a>
+      <a href="#" class="btn btn-secondary disabled">既読{{ item.read}}人</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>please login</p>
+<a href="{% url 'login' %}">ログイン画面へ</a>
+{% endif %}
+{% endblock content %}

@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
+from .models import SnsBoardModel
 
 
 def signup_func(request):
@@ -40,4 +41,5 @@ def board_func(request):
     投稿の一覧表示
     """
     # 一覧表示
-    return render(request, 'board.html', {})
+    board_list = SnsBoardModel.objects.all().order_by('-created_at')
+    return render(request, 'board.html', {'board_list': board_list})

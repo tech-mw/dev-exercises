@@ -2,21 +2,43 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<div class="container">
-    <div class="alert alert-{{ item.notice_level }}" role="alert">
-      <p>投稿日：{{ board.created_at | date:"o/n/j" }}</p>
-      <p>投稿者：{{ board.author }}</p>
-      <p>タイトル：{{ board.title }}</p>
-      {% if board.snsimage %}
-        <p><img src="{{ board.snsimage.url }}" width="300"></p>
-      {% endif %}
-      <p>本文：{{ board.content }}</p>
-      <a href="{% url 'good' board.pk %}" class="btn btn-primary">いいね</a>
-      <a href="{% url 'read' board.pk %}" class="btn btn-secondary">既読</a>
+<div class="container mt-5">
+  <div class="card border-0 shadow-sm bg-light">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">{{ board.title }}</h4>
     </div>
+    <div class="card-body">
+      <div class="mb-3 text-muted small d-flex justify-content-between">
+        <span>🕒 投稿日：{{ board.created_at|date:"Y/m/d H:i" }}</span>
+        <span>👤 投稿者：{{ board.author }}</span>
+      </div>
+
+      {% if board.snsimage %}
+        <div class="mb-4 text-center">
+          <img src="{{ board.snsimage.url }}" class="img-fluid rounded shadow-sm" style="max-height: 300px;" alt="投稿画像">
+        </div>
+      {% endif %}
+
+      <p class="fs-5">{{ board.content|linebreaksbr }}</p>
+
+      <div class="d-flex gap-3 mt-4">
+        <a href="{% url 'good' board.pk %}" class="btn btn-primary">
+          いいね
+        </a>
+        <a href="{% url 'read' board.pk %}" class="btn btn-info text-white">
+          既読
+        </a>
+      </div>
+    </div>
+    <div class="card-footer bg-white text-end">
+      <a href="{% url 'board' %}" class="btn btn-outline-dark">← 一覧画面へ戻る</a>
+    </div>
+  </div>
 </div>
 {% else %}
-<p>please login</p>
-<a href="{% url 'login' %}">ログイン画面へ</a>
+<div class="container mt-5 text-center">
+  <p class="text-danger">※ログインしてください</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">ログイン画面へ</a>
+</div>
 {% endif %}
 {% endblock content %}

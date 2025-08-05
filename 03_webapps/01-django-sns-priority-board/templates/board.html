@@ -1,27 +1,73 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<div class="alert alert-primary" role="alert">
-  <h3>社内SNS</h3>
+<div class="py-5 text-center shadow-sm" style="background: linear-gradient(135deg, #4a90e2, #007bff); color: #fff;">
+  <h2 class="fw-bold mb-2 display-5">
+    社内SNS 投稿一覧
+  </h2>
+  <p class="lead mb-0">最新のお知らせ・社内共有情報をここでチェック</p>
 </div>
 {% endblock header %}
 
+
 {% block content %}
 {% if user.is_authenticated %}
-<div class="container">
-    {% for item in board_list %}
-    <div class="alert alert-{{ item.notice_level }}" role="alert">
-      <p>投稿日：{{ item.created_at | date:"o/n/j" }}</p>
-      <p>投稿者：{{ item.author }}</p>
-      <p>タイトル：<a href="{% url 'detail' item.pk %}">{{ item.title }}</a></p>
-      <p>本文：{{ item.content }}</p>
-      <a href="#" class="btn btn-primary disabled">いいね{{ item.good }}件</a>
-      <a href="#" class="btn btn-secondary disabled">既読{{ item.read}}人</a>
+<div class="container mb-5 pt-5">
+{% for item in board_list %}
+<div class="card border-0 shadow rounded-4 mb-4 bg-{{ item.notice_level }} bg-opacity-25">
+  <div class="card-body p-4">
+
+    <!-- 投稿者情報 -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+          {{ item.author|slice:":1"|upper }}
+        </div>
+        <div>
+          <div class="fw-semibold">{{ item.author }}</div>
+          <small class="text-muted">{{ item.created_at|date:"Y/m/d H:i" }}（{{ item.created_at|timesince }}前）</small>
+        </div>
+      </div>
     </div>
-    {% endfor %}
+    <hr class="my-4 border-top border-secondary">
+
+    <!-- タイトル -->
+    <h5 class="card-title fw-bold mb-3">件名： {{ item.title }}</h5>
+
+    <!-- 画像 -->
+    {% if item.snsimage %}
+    <div class="mb-3 text-center">
+      <img src="{{ item.snsimage.url }}" class="img-fluid rounded shadow-sm border" style="max-height: 300px; object-fit: cover;">
+    </div>
+    {% endif %}
+
+    <!-- 本文 -->
+    <p class="card-text text-secondary fs-6">{{ item.content|truncatewords:30 }}...</p>
+
+    <!-- リアクション -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <div class="d-flex gap-3">
+        <span class="badge rounded-pill bg-primary px-3 py-2">👍 いいね：{{ item.good }}</span>
+        <span class="badge rounded-pill bg-info px-3 py-2">👥 既読ユーザー人数：{{ item.read }}</span>
+      </div>
+      <a href="{% url 'detail' item.pk %}" class="btn btn-outline-dark btn-sm rounded-pill">▶ 詳細を見る</a>
+    </div>
+
+  </div>
+</div>
+{% endfor %}
+
+<div class="d-flex justify-content-center my-4">
+  <a href="{% url 'create' %}" class="btn btn-primary px-5 py-2 fs-5">
+    投稿作成画面へ
+  </a>
+</div>
+
 </div>
 {% else %}
-<p>please login</p>
-<a href="{% url 'login' %}">ログイン画面へ</a>
+<div class="container text-center py-5">
+  <p class="text-danger fs-5">※ログインが必要です</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">ログインする</a>
+</div>
 {% endif %}
 {% endblock content %}

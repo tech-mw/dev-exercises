@@ -23,3 +23,18 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/* base.css などに追加するなら */
+.card-title {
+  color: #212529;
+}
+
+.card-text {
+  line-height: 1.6;
+}
+
+.badge {
+  font-size: 0.85rem;
+}
+
+

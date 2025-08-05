@@ -1,32 +1,63 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<div class="alert alert-primary" role="alert">
-  <h3>社内SNS</h3>
+<div class="py-5 bg-gradient text-center shadow" style="background: linear-gradient(135deg, #4a90e2, #007bff);">
+  <h2 class="fw-bold mb-2 display-5">新規投稿フォーム</h2>
+  <p class="lead mb-0">社内へ共有したい情報を投稿しましょう</p>
 </div>
 {% endblock header %}
 
 {% block content %}
 {% if user.is_authenticated %}
-<div class="container">
-    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
-        <p>タイトル：<input type="text" name="title"></p>
-        <p>本文：<input type="text" name="content"></p>
-        <p>画像：<input type="file" name="snsimage"></p>
-        <p>通知レベル：
-            <select name="notice_level">
-                <option value="danger">高</option>
-                <option value="warning">中</option>
-                <option value="primary">低</option>
-                <option value="light" selected>無</option>
-            </select>
-        </p>
+<div class="container my-5">
+  <div class="card shadow-lg border-0 rounded-4 p-4">
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="title" class="form-label fw-bold">タイトル</label>
+          <input type="text" name="title" id="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="content" class="form-label fw-bold">本文</label>
+          <textarea name="content" id="content" rows="5" class="form-control" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="snsimage" class="form-label fw-bold">画像（任意）</label>
+          <input type="file" name="snsimage" id="snsimage" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label for="notice_level" class="form-label fw-bold">通知レベル</label>
+          <select name="notice_level" id="notice_level" class="form-select">
+            <option value="danger">高</option>
+            <option value="warning">中</option>
+            <option value="primary">低</option>
+            <option value="light" selected>無</option>
+          </select>
+        </div>
+
         <input type="hidden" name="author" value="{{ user.username }}">
-        <input type="submit" value="投稿する">
-    </form>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-success btn-lg">投稿する</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="{% url 'board' %}" class="btn btn-link">一覧画面へ戻る</a>
+  </div>
+
 </div>
 {% else %}
-<p>please login</p>
-<a href="{% url 'login' %}">ログイン画面へ</a>
+<div class="container text-center py-5">
+  <p class="text-danger fs-5">※ログインが必要です</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">ログイン画面へ</a>
+</div>
 {% endif %}
 {% endblock content %}

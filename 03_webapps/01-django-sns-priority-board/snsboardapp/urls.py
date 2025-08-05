@@ -8,5 +8,5 @@ urlpatterns = [
     path('detail/<int:pk>', detail_func, name='detail'),
     path('good/<int:pk>', good_func, name='good'),
     path('read/<int:pk>', read_func, name='read'),
-    path('create/', BoardCreate.as_view(), name='read'),
+    path('create/', BoardCreate.as_view(), name='create'),
 ]

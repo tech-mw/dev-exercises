@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <div class="alert alert-{{ item.notice_level }}" role="alert">
+      <p>投稿日：{{ board.created_at | date:"o/n/j" }}</p>
+      <p>投稿者：{{ board.author }}</p>
+      <p>タイトル：{{ board.title }}</p>
+      <p><img src="{{ board.snsimage.url }}" width="300"></p>
+      <p>本文：{{ board.content }}</p>
+      <a href="{% url 'good' board.pk %}" class="btn btn-primary">いいね</a>
+      <a href="{% url 'read' board.pk %}" class="btn btn-secondary">既読</a>
+    </div>
+</div>
+{% else %}
+<p>please login</p>
+<a href="{% url 'login' %}">ログイン画面へ</a>
+{% endif %}
+{% endblock content %}

@@ -43,3 +43,40 @@ def board_func(request):
     # 一覧表示
     board_list = SnsBoardModel.objects.all().order_by('-created_at')
     return render(request, 'board.html', {'board_list': board_list})
+
+
+def detail_func(request, pk):
+    """
+    投稿の詳細表示
+    """
+    board = SnsBoardModel.objects.get(pk=pk)
+    return render(request, 'detail.html', {'board': board})
+
+
+def good_func(request, pk):
+    """
+    いいね機能（簡易）
+    """
+    board = SnsBoardModel.objects.get(pk=pk)
+    board.good += 1
+    board.save()
+    return redirect('board')
+
+
+def read_func(request, pk):
+    """
+    既読機能（簡易）
+    """
+    board = SnsBoardModel.objects.get(pk=pk)
+    username = request.user.get_username()
+    # 既に読んでいる場合は何もしない
+    if username in board.read_users:
+        return redirect('board')
+    # 読んでいない場合はカウントを増やす
+    board.read += 1
+    users = board.read_users.split(',') if board.read_users else []
+    if username not in users:
+        users.append(username)
+        board.read_users = ','.join(users)
+        board.save()
+    return redirect('board')

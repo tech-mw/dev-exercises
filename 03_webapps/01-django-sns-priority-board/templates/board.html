@@ -13,7 +13,7 @@
     <div class="alert alert-{{ item.notice_level }}" role="alert">
       <p>投稿日：{{ item.created_at | date:"o/n/j" }}</p>
       <p>投稿者：{{ item.author }}</p>
-      <p>タイトル：<a href="#">{{ item.title }}</a></p>
+      <p>タイトル：<a href="{% url 'detail' item.pk %}">{{ item.title }}</a></p>
       <p>本文：{{ item.content }}</p>
       <a href="#" class="btn btn-primary disabled">いいね{{ item.good }}件</a>
       <a href="#" class="btn btn-secondary disabled">既読{{ item.read}}人</a>

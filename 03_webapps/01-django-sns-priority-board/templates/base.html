@@ -10,11 +10,32 @@
   </head>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <body>
-    {% block header %}
-    {% endblock header %}
+  {% block header %}
+  <div class="py-5 text-center shadow-sm position-relative"
+       style="background: linear-gradient(135deg, #4a90e2, #007bff); color: #fff;">
+    {% if user.is_authenticated %}
+    <div class="position-absolute top-0 end-0 p-3 text-end">
+      <div class="small mb-1">ユーザー名：{{ user.username }}</div>
+      <a href="javascript:void(0);" onclick="confirmLogout()" class="btn btn-outline-light btn-sm">ログアウト</a>
+    </div>
+    {% endif %}
+    {% block header_title %}
+    {% endblock header_title %}
+    <p class="lead mb-0">最新のお知らせ・社内共有情報をここでチェック</p>
+  </div>
+  {% endblock header %}
+
     {% block content %}
     {% endblock content %}
-    {% block customjs %}
-    {% endblock customjs %}
+
+  {% block customjs %}
+  <script>
+    function confirmLogout() {
+      if (confirm("本当にログアウトしますか？")) {
+        window.location.href = "{% url 'logout' %}";
+      }
+    }
+  </script>
+  {% endblock customjs %}
   </body>
 </html>

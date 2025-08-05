@@ -20,6 +20,7 @@ PJ/
 │          └── 01-ebook-schema-sql
 ├── 02_environments/
 └── 03_webapps/
+     └── 01-django-sns-priority-board
 </pre>
 ---
 ## 1. 01_basics
@@ -73,3 +74,10 @@ PJ/
 ---
 ## 3. 03_webapps
 - Webアプリ開発セクション
+#### 3-1. [01-django-sns-priority-board](03_webapps/01-django-sns-priority-board/README.md)
+- Django（Function-Based View + 一部 Class-Based View）で構築した、簡易社内SNS風Webアプリケーション
+- 特徴
+  - 簡易的な標準CRUD機能、ミニマムな構成、UIはbootstrapで最低限装飾
+  - 投稿には「タイトル・本文・画像・通知レベル」を設定可
+  - 通知レベルの設定で「重要なお知らせ」など優先度が高い情報は表示が強調/目立たせる
+  - 「いいね」や「既読数」機能有（簡易的）

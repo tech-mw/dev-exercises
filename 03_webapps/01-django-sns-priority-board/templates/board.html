@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="py-5 text-center shadow-sm position-relative" style="background: linear-gradient(135deg, #4a90e2, #007bff); color: #fff;">
+  {% if user.is_authenticated %}
+  <div class="position-absolute top-0 end-0 p-3 text-end">
+    <div class="small mb-1">ユーザー名：{{ user.username }}</div>
+    <a href="javascript:void(0);" onclick="confirmLogout()" class="btn btn-outline-light btn-sm">ログアウト</a>
+  </div>
+  {% endif %}
+
+  <h2 class="fw-bold mb-2 display-5">
+    社内SNS 投稿一覧
+  </h2>
+  <p class="lead mb-0">最新のお知らせ・社内共有情報をここでチェック</p>
+</div>
+{% endblock header %}
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mb-5 pt-5">
+{% for item in board_list %}
+<div class="card border-0 shadow rounded-4 mb-4 bg-{{ item.notice_level }} bg-opacity-25">
+  <div class="card-body p-4">
+
+    <!-- 投稿者情報 -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+          {{ item.author|slice:":1"|upper }}
+        </div>
+        <div>
+          <div class="fw-semibold">{{ item.author }}</div>
+          <small class="text-muted">{{ item.created_at|date:"Y/m/d H:i" }}（{{ item.created_at|timesince }}前）</small>
+        </div>
+      </div>
+    </div>
+    <hr class="my-4 border-top border-secondary">
+
+    <!-- タイトル -->
+    <h5 class="card-title fw-bold mb-3">件名： <a href="{% url 'detail' item.pk %}">{{ item.title }}</a></h5>
+
+    <!-- 画像 -->
+    {% if item.snsimage %}
+    <div class="mb-3 text-center">
+      <img src="{{ item.snsimage.url }}" class="img-fluid rounded shadow-sm border" style="max-height: 300px; object-fit: cover;">
+    </div>
+    {% endif %}
+
+    <!-- 本文 -->
+    <p class="card-text text-secondary fs-6">{{ item.content|truncatewords:30 }}...</p>
+
+    <!-- リアクション -->
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      <div class="d-flex gap-3">
+        <span class="badge rounded-pill bg-primary px-3 py-2">👍 いいね：{{ item.good }}</span>
+        <span class="badge rounded-pill bg-info px-3 py-2">👥 既読ユーザー人数：{{ item.read }}</span>
+      </div>
+    <div class="d-flex gap-2">
+      <a href="{% url 'detail' item.pk %}" class="btn btn-outline-dark btn-sm rounded-pill">詳細</a>
+      {% if item.author == user.username %}
+      <a href="{% url 'update' item.pk %}" class="btn btn-outline-dark btn-sm rounded-pill">編集</a>
+      <a href="{% url 'delete' item.pk %}" class="btn btn-outline-dark btn-sm rounded-pill">削除</a>
+      {% endif %}
+    </div>
+    </div>
+
+  </div>
+</div>
+{% endfor %}
+
+<div class="d-flex justify-content-center my-4">
+  <a href="{% url 'create' %}" class="btn btn-primary px-5 py-2 fs-5">
+    投稿作成画面へ
+  </a>
+</div>
+
+</div>
+{% else %}
+<div class="container text-center py-5">
+  <p class="text-danger fs-5">※ログインが必要です</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">ログインする</a>
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block customjs %}
+<script>
+  function confirmLogout() {
+    if (confirm("本当にログアウトしますか？")) {
+      window.location.href = "{% url 'logout' %}";
+    }
+  }
+</script>
+{% endblock customjs %}

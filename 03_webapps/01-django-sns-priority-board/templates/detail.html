@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="py-5 text-center shadow-sm position-relative" style="background: linear-gradient(135deg, #4a90e2, #007bff); color: #fff;">
+  {% if user.is_authenticated %}
+  <div class="position-absolute top-0 end-0 p-3 text-end">
+    <div class="small mb-1">ユーザー名：{{ user.username }}</div>
+    <a href="javascript:void(0);" onclick="confirmLogout()" class="btn btn-outline-light btn-sm">ログアウト</a>
+  </div>
+  {% endif %}
+
+  <h2 class="fw-bold mb-2 display-5">
+    社内SNS 投稿詳細
+  </h2>
+  <p class="lead mb-0">最新のお知らせ・社内共有情報をここでチェック</p>
+</div>
+{% endblock header %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mt-5">
+  <div class="card border-0 shadow-sm bg-light">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">{{ board.title }}</h4>
+    </div>
+    <div class="card-body">
+      <div class="mb-3 text-muted small d-flex justify-content-between">
+        <span>🕒 投稿日：{{ board.created_at|date:"Y/m/d H:i" }}</span>
+        <span>👤 投稿者：{{ board.author }}</span>
+      </div>
+
+      {% if board.snsimage %}
+        <div class="mb-4 text-center">
+          <img src="{{ board.snsimage.url }}" class="img-fluid rounded shadow-sm" style="max-height: 300px;" alt="投稿画像">
+        </div>
+      {% endif %}
+
+      <p class="fs-5">{{ board.content|linebreaksbr }}</p>
+
+      <div class="d-flex gap-3 mt-4">
+        <a href="{% url 'good' board.pk %}" class="btn btn-primary">
+          いいね
+        </a>
+        <a href="{% url 'read' board.pk %}" class="btn btn-info text-white">
+          既読
+        </a>
+      </div>
+    </div>
+    <div class="card-footer bg-white text-end">
+      {% if board.author == user.username %}
+        <a href="{% url 'update' board.pk %}" class="btn btn-warning text-white me-2">
+          編集する
+        </a>
+      {% endif %}
+      <a href="{% url 'board' %}" class="btn btn-outline-dark">
+        ← 一覧画面へ戻る
+      </a>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="container mt-5 text-center">
+  <p class="text-danger">※ログインしてください</p>
+  <a href="{% url 'login' %}" class="btn btn-primary">ログイン画面へ</a>
+</div>
+{% endif %}
+{% endblock content %}

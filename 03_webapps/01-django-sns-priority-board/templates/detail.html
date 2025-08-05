@@ -7,7 +7,9 @@
       <p>投稿日：{{ board.created_at | date:"o/n/j" }}</p>
       <p>投稿者：{{ board.author }}</p>
       <p>タイトル：{{ board.title }}</p>
-      <p><img src="{{ board.snsimage.url }}" width="300"></p>
+      {% if board.snsimage %}
+        <p><img src="{{ board.snsimage.url }}" width="300"></p>
+      {% endif %}
       <p>本文：{{ board.content }}</p>
       <a href="{% url 'good' board.pk %}" class="btn btn-primary">いいね</a>
       <a href="{% url 'read' board.pk %}" class="btn btn-secondary">既読</a>

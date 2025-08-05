@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
 from .models import SnsBoardModel
 
 
@@ -69,10 +72,8 @@ def read_func(request, pk):
     """
     board = SnsBoardModel.objects.get(pk=pk)
     username = request.user.get_username()
-    # 既に読んでいる場合は何もしない
     if username in board.read_users:
         return redirect('board')
-    # 読んでいない場合はカウントを増やす
     board.read += 1
     users = board.read_users.split(',') if board.read_users else []
     if username not in users:
@@ -80,3 +81,15 @@ def read_func(request, pk):
         board.read_users = ','.join(users)
         board.save()
     return redirect('board')
+
+
+class BoardCreate(CreateView):
+    """
+    投稿の作成
+    """
+    print("___")
+    template_name = 'create.html'
+    model = SnsBoardModel
+    fields = ('title', 'content', 'author', 'snsimage', 'notice_level')
+    success_url = reverse_lazy('board')
+

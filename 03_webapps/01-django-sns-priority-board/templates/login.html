@@ -59,16 +59,10 @@
 
 <main class="form-signin w-100 m-auto">
   <form method="POST">{% csrf_token %}
-    <h1 class="h3 mb-3 fw-normal">新規登録</h1>
-    {% if success %}
+    <h1 class="h3 mb-3 fw-normal">ログイン</h1>
+    {% if context %}
       <div class="alert alert-info" role="alert">
-        {{ success }}
-        <a href="{% url 'login' %}">ログイン画面へ</a>
-      </div>
-    {% endif %}
-    {% if error %}
-      <div class="alert alert-danger" role="alert">
-        {{ error }}
+        {{ context }}
       </div>
     {% endif %}
     <div class="form-floating">
@@ -79,7 +73,7 @@
       <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
       <label for="floatingPassword">パスワード</label>
     </div>
-    <button class="btn btn-primary w-100 py-2" type="submit">登録する</button>
+    <button class="btn btn-primary w-100 py-2" type="submit">ログインする</button>
   </form>
 </main>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

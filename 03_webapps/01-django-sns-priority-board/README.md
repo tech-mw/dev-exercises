@@ -45,6 +45,10 @@ $ pip install django pillow
 .
 ├── README
 ├── manage.py
+├── media
+│ └── images
+│     ├── coffee.png
+│     └── remote.jpg
 ├── snsboardapp
 │   ├── __init__.py
 │   ├── admin.py

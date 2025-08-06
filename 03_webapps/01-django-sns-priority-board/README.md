@@ -93,6 +93,9 @@ $ pip install django pillow
 ### 投稿一覧画面
 ![投稿一覧](./images/board.png)
 
+#### ページング（投稿一覧画面内）
+![ページング](./images/paging.png)
+
 ### 新規投稿画面
 ![新規投稿画面](./images/create.png)
 
@@ -104,4 +107,5 @@ $ pip install django pillow
 
 ### 削除画面
 ![削除画面](./images/delete.png)
+
 

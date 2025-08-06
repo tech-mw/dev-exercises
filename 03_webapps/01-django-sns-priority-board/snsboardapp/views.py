@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views import generic
 
 from .models import SnsBoardModel
 
@@ -57,21 +57,18 @@ def logout_func(request):
     return redirect("login")
 
 
-def board_func(request):
-    """
-    投稿一覧表示
-    """
-    # 一覧表示
-    board_list = SnsBoardModel.objects.all().order_by("-created_at")
-    return render(request, "board.html", {"board_list": board_list})
+class BoardView(generic.ListView):
+    model = SnsBoardModel
+    template_name = "board.html"
+    context_object_name = "board_list"
+    ordering = ["-created_at"]
+    paginate_by = 5
 
 
-def detail_func(request, pk):
-    """
-    投稿詳細表示
-    """
-    board = SnsBoardModel.objects.get(pk=pk)
-    return render(request, "detail.html", {"board": board})
+class DetailView(generic.DetailView):
+    model = SnsBoardModel
+    template_name = "detail.html"
+    context_object_name = "board"
 
 
 def good_func(request, pk):
@@ -101,33 +98,30 @@ def read_func(request, pk):
     return redirect("board")
 
 
-class BoardCreate(CreateView):
+class BoardCreate(generic.CreateView):
     """
     新規投稿作成画面
     """
-
     template_name = "create.html"
     model = SnsBoardModel
     fields = ("title", "content", "author", "snsimage", "notice_level")
     success_url = reverse_lazy("board")
 
 
-class BoardUpdate(UpdateView):
+class UpdateView(generic.UpdateView):
     """
     投稿更新
     """
-
     template_name = "update.html"
     model = SnsBoardModel
     fields = ("title", "content", "snsimage", "notice_level")
     success_url = reverse_lazy("board")
 
 
-class BoardDelete(DeleteView):
+class DeleteView(generic.DeleteView):
     """
     投稿削除
     """
-
     template_name = "delete.html"
     model = SnsBoardModel
     success_url = reverse_lazy("board")

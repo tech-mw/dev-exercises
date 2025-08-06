@@ -15,6 +15,7 @@ Bootstrap によるシンプルなUIを実装しています。
 - 削除、更新（自身の投稿分のみ）
 - いいね機能・既読機能（簡易的）
 - Bootstrap を用いたシンプルな画面設計（UIは最低限）
+- ページング機能（投稿一覧画面内）
 ---
 
 ## 想定ユースケース
@@ -78,7 +79,8 @@ $ pip install django pillow
     ├── detail.html
     ├── login.html
     ├── signup.html
-    └── update.html
+    ├── update.html
+    └── paging.html
 </pre>
 
 ---

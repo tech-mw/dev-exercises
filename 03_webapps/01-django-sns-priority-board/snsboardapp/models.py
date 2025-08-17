@@ -7,7 +7,6 @@ class SnsBoardModel(models.Model):
     """
     投稿モデル
     """
-
     title = models.CharField(max_length=200, verbose_name="タイトル")
     content = models.TextField(verbose_name="内容")
     author = models.CharField(max_length=50, verbose_name="投稿者")

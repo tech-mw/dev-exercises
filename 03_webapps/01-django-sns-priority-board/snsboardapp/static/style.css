@@ -24,7 +24,6 @@ body {
   border-top-right-radius: 0;
 }
 
-/* base.css などに追加するなら */
 .card-title {
   color: #212529;
 }
@@ -36,5 +35,3 @@ body {
 .badge {
   font-size: 0.85rem;
 }
-
-

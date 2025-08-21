@@ -62,14 +62,14 @@ mysql -h 127.0.0.1 -P 4036 -u root -p
 2. `$ brew install graphviz`（brewが入っている事前提）
 3. `$ dot -V`でインストールが完了したか確認
 4. `.puml`形式ファイル作成（画面分割でプレビューが表示）
-![pycharm_uml01](01-ebook-schema-sql/images/pycharm_uml01.png)
+![pycharm_uml01](images/pycharm_uml01.png)
 
 ### draw.io上でコード埋込
 - [drawio](https://www.drawio.com/) > 配置 > 挿入 > 高度な設定 > UMLを埋め込む
   - draw.io の UMLエンジンは一部構文にしか対応していないため、pycharmではエラーなく表示されるにも関わらずdrawio上ではエラーになる事があります
   - 上記理由のためpycharmなどでリアルタイムプレビューが良さそうです。導入も簡単なので。
-![drawio_uml01](01-ebook-schema-sql/images/drawio_uml01.png)
-![drawio_uml02](01-ebook-schema-sql/images/drawio_uml02.png)
+![drawio_uml01](images/drawio_uml01.png)
+![drawio_uml02](images/drawio_uml02.png)
 
 
 ## 補足

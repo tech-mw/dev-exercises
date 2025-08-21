@@ -16,8 +16,10 @@ PJ/
 │    ├─── git
 │    │     ├── 01-detached-non-fast-forward
 │    │     └── 02-detached-fast-forward
-│    └─── mysql
-│          └── 01-ebook-schema-sql
+│    ├─── mysql
+│    │     └── 01-ebook-schema-sql
+│    └─── python
+│          └── 01-sd-image-cli
 ├── 02_environments/
 └── 03_webapps/
      └── 01-django-sns-priority-board
@@ -62,12 +64,22 @@ PJ/
   - TerminalとSourceTreeでの表示の違いを比較（各状態でTerminalとSourceTreeそれぞれの表示画面をスクリーンショット）
 
 ### 1-3. mysql
-#### 1-3-1. [01-ebook-schema-sql](01_basics/mysql/README.md)
+#### 1-3-1. [01-ebook-schema-sql](01_basics/mysql/01-ebook-schema-sql/README.md)
 - Mysqlを公式イメージでDocker化、簡易的な電子書籍アプリを想定したモデルとSQLサンプル
 - 特徴
   - ユーザー情報、書籍情報、書籍購入履歴、書籍閲覧履歴 4つのテーブルとサンプルデータを流し込み、初期構築
   - [期間内に特定の出版社を書籍を購入した累計額をユーザー毎に集計]など実務的なSQLサンプル
 
+### 1-4. python
+#### 1-4-1. [01-sd-image-cli](01_basics/python/01-sd-image-cli/README.md)
+- AI画像生成ライブラリ「Stable Diffusion」を使用したミニマムなPython CLI サンプル
+- 特徴
+  - Stable Diffusion（diffusers）を利用して画像を生成する最小スクリプト
+  - 日本語で入力したプロンプトを自動的に英語へ翻訳してから生成  
+    （`--no_translate` オプションで翻訳をスキップ可能）
+  - option指定可：サイズ（縦/横）、出力ファイル名、出力フォーマット(jpg or png)、出力ディレクトリ、翻訳有無切替
+  - height / width は 8 の倍数のみ許可
+  - 初回実行時はモデルがダウンロードされるため時間がかかる（2回目以降はキャッシュが効いて高速化）
 ---
 ## 2. 02_environments
 - 環境構築系セクション（複数サービス連携やCI/CDなど）

@@ -17,3 +17,6 @@ db.sqlite3
 # Editor settings
 .vscode/
 .idea/
+
+# pyenv
+.python-version

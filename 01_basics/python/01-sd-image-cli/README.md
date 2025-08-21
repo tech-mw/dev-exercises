@@ -1,6 +1,6 @@
 # Stable Diffusion CLI Sample (Python)
 
-AI画像生成ライブラリ「Stable Diffusion」を使用したミニマムなPython CLI サンプルです。
+AI画像生成ライブラリ「Stable Diffusion」を使用したミニマムなPython CLI サンプルです
 
 ---
 

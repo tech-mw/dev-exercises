@@ -105,8 +105,8 @@ options:
   --no_translate        翻訳を行わず、入力文字列をそのまま使用する
   
   
-実行例（翻訳有/サイズ指定無/PNG）：$ python3 app.py --format png --filename sample
-実行例（翻訳無/サイズ指定有/JPG）：$ python3 app.py --no_translate --width 80 --height 80 --format jpg --filename sample
+実行例（翻訳有/サイズ指定無/PNG）：$ python3 app.py --img_format png --filename sample
+実行例（翻訳無/サイズ指定有/JPG）：$ python3 app.py --no_translate --width 80 --height 80 --img_format jpg --filename sample
 ```
 
 ## サンプル画像

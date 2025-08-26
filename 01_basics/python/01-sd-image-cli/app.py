@@ -77,7 +77,7 @@ def render_and_save(
     # PILが期待するフォーマット名へ変換（jpg→JPEG）
     pil_format = "PNG" if fmt == "png" else "JPEG"
 
-    # 2) 保存先の準備（なければ作る）
+    # 2) 保存先の準備
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 

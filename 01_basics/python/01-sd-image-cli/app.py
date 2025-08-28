@@ -87,11 +87,16 @@ def render_and_save(
     # from_pretrained は初回にモデル重みをダウンロードするため時間がかかる
     # ※ モデルを変更する場合は、下記の文字列を別のモデルIDに差し替えるだけでOK
     # 例）汎用（速さ重視）: "stabilityai/stable-diffusion-2-1"
-    # 例）超速系(Turbo):  "stabilityai/sd-turbo"（steps=4, guidance=0.0 推奨）
-    pipeline = DiffusionPipeline.from_pretrained("digiplay/AsianBrmBeautyrealmix_v2.0")
+    pipeline = DiffusionPipeline.from_pretrained("stabilityai/sd-turbo")
 
     # 4) 画像生成
-    img = pipeline(prompt, height=height, width=width).images[0]
+    img = pipeline(
+        prompt,
+        height=height,
+        width=width,
+        num_inference_steps=4,
+        guidance_scale=0.0
+    ).images[0]
 
     # 5) 保存
     img.save(target.as_posix(), format=image_format)

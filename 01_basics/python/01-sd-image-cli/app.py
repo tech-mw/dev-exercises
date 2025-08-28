@@ -9,7 +9,7 @@ Stable Diffusion（diffusers）で画像を生成する最小スクリプト
 - height/width は 8 の倍数のみ許可
 - 出力は png/jpg のみ（--img_format）
 - 保存先ディレクトリは自動作成
-※ 初回実行時はモデルのダウンロードが発生し、時間がかかります
+※ 初回実行時はモデルのダウンロードが発生し、時間がかかる
 """
 
 
@@ -66,16 +66,15 @@ def render_and_save(
     画像を生成し、指定フォーマットで保存
       1) 出力フォーマットの正規化と検証
       2) 保存先ディレクトリの作成
-      3) モデルの読み込み（初回はダウンロードで時間がかかる）
-      4) 画像生成（必要に応じて追加パラメータを渡せる）
-      5) 画像の保存（PILフォーマットに変換して保存）
+      3) モデルの読み込み（初回はモデルダウンロードで時間がかかる）
+      4) 画像生成
+      5) 画像の保存
     """
     # 1) フォーマットの正規化・検証
     fmt = img_format.lower()
     if fmt not in ('png', 'jpg'):
         raise ValueError("img_format は 'png' または 'jpg' を指定してください。")
-    # PILが期待するフォーマット名へ変換（jpg→JPEG）
-    pil_format = "PNG" if fmt == "png" else "JPEG"
+    image_format = "PNG" if fmt == "png" else "JPEG"
 
     # 2) 保存先の準備
     out_dir = Path(output_dir)
@@ -86,7 +85,6 @@ def render_and_save(
 
     # 3) モデル読込
     # from_pretrained は初回にモデル重みをダウンロードするため時間がかかる
-    # 2回目以降はキャッシュが効いて速くなる
     # ※ モデルを変更する場合は、下記の文字列を別のモデルIDに差し替えるだけでOK
     # 例）汎用（速さ重視）: "stabilityai/stable-diffusion-2-1"
     # 例）超速系(Turbo):  "stabilityai/sd-turbo"（steps=4, guidance=0.0 推奨）
@@ -96,8 +94,8 @@ def render_and_save(
     img = pipeline(prompt, height=height, width=width).images[0]
 
     # 5) 保存
-    img.save(target.as_posix(), format=pil_format)
-    print(f"Saved {target} ({pil_format})")
+    img.save(target.as_posix(), format=image_format)
+    print(f"Saved {target} ({image_format})")
 
 
 if __name__ == "__main__":

@@ -91,14 +91,14 @@ options:
 ## サンプル画像
 ### 例1
 ```
-A smiling junior high school student
-（笑顔の中学生）
+A portrait of a young woman, natural lighting, simple background
+（若い女性のポートレート、自然光、シンプルな背景）
 ```
 ![サンプル画像1](./images/sample01.png)
 
 ### 例2
 ```
-High school students working up a refreshing sweat during morning practice during summer vacation
-（夏休みの朝練習で爽やかな汗を流す高校生たち）
+A beautiful mountain landscape at sunrise, clear sky, soft light
+（日の出の美しい山の風景、澄んだ空、柔らかな光）
 ```
 ![サンプル画像2](./images/sample02.png)

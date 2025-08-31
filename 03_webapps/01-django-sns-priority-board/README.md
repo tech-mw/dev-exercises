@@ -36,7 +36,7 @@ $ python3 -m venv venv
 $ source ./venv/bin/activate
 
 # 必要なパッケージのインストール
-$ pip install django pillow
+$ pip install django pillow python-dotenv
 ```
 
 ---

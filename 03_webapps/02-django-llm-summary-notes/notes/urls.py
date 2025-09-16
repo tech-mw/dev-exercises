@@ -12,4 +12,5 @@ urlpatterns = [
     ),
          name='signin'),
     path("signout/", LogoutView.as_view(next_page='notes:signin'), name="signout"),
+    path('create/', views.NoteCreate.as_view(), name='create'),
 ]

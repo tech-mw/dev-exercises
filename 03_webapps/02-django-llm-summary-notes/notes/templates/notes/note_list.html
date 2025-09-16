@@ -1,7 +1,68 @@
 {% extends 'notes/base.html' %}
 {% block content %}
-<h1>メモ一覧</h1>
-{% for note in note_list %}
-    {{note.title}}
-{% endfor %}
-{% endblock content%}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h4 mb-0">メモ一覧</h1>
+        <a href="#" class="btn btn-primary">
+            新規作成
+        </a>
+    </div>
+
+    <ul class="list-group shadow-sm">
+        {% for note in note_list %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="me-3">
+                <a href="#"
+                   class="fw-semibold text-decoration-none">
+                    {{ note.title }}
+                </a>
+                {% if note.summary %}
+                <p>{{ note.summary }}</p>
+                {% endif %}
+                <div class="small text-body-secondary mt-1">
+                    {{ note.created_at|date:"Y-m-d H:i" }}
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="#"
+                   class="btn btn-sm btn-outline-primary">編集</a>
+                <a href="#"
+                   class="btn btn-sm btn-outline-danger">削除</a>
+            </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-body-secondary">
+            まだメモがありません。まずは「新規作成」からどうぞ。
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if is_paginated %}
+    <nav class="mt-4" aria-label="ページナビゲーション">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="?page=1" aria-label="最初">&laquo;</a>
+            </li>
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">前へ</a>
+            </li>
+
+            <li class="page-item disabled">
+          <span class="page-link">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+          </span>
+            </li>
+
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">次へ</a>
+            </li>
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="最後">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+{% endblock content %}

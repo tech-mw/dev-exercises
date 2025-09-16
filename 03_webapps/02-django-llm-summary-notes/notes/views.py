@@ -9,6 +9,7 @@ from .util.summarizer import TextSummarizer
 
 class NoteIndex(LoginRequiredMixin, generic.ListView):
     model = Note
+    paginate_by = 10
 
 
 class NoteCreate(LoginRequiredMixin, generic.CreateView):
@@ -43,9 +44,19 @@ class NoteUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Note
     form_class = NoteForm
     template_name = "notes/form.html"
+    success_url = reverse_lazy("notes:index")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["action_label"] = "編集"
         context["button_label"] = "更新"
+        return context
+
+class NoteDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Note
+    success_url = reverse_lazy("notes:index")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action_label"] = "削除"
         return context

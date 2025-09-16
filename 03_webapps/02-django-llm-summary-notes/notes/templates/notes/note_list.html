@@ -2,33 +2,29 @@
 {% block content %}
 
 <div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="h4 mb-0">メモ一覧</h1>
-        <a href="#" class="btn btn-primary">
-            新規作成
-        </a>
-    </div>
-
     <ul class="list-group shadow-sm">
         {% for note in note_list %}
         <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="me-3">
-                <a href="#"
-                   class="fw-semibold text-decoration-none">
+            <div class="me-3 flex-grow-1 min-w-0 overflow-hidden">
+                <a href="{% url 'notes:update' note.id %}"
+                   class="fw-semibold text-decoration-none d-block text-truncate text-break">
                     {{ note.title }}
                 </a>
+
                 {% if note.summary %}
-                <p>{{ note.summary }}</p>
+                <p class="mb-1 text-truncate text-break">
+                    {{ note.summary }}
+                </p>
                 {% endif %}
+
                 <div class="small text-body-secondary mt-1">
                     {{ note.created_at|date:"Y-m-d H:i" }}
                 </div>
             </div>
-            <div class="d-flex gap-2">
-                <a href="{% url 'notes:update' note.id %}"
-                   class="btn btn-sm btn-outline-primary">編集</a>
-                <a href="#"
-                   class="btn btn-sm btn-outline-danger">削除</a>
+
+            <div class="d-flex flex-shrink-0 gap-2">
+                <a href="{% url 'notes:update' note.id %}" class="btn btn-sm btn-outline-primary">編集</a>
+                <a href="{% url 'notes:delete' note.id %}" class="btn btn-sm btn-outline-danger">削除</a>
             </div>
         </li>
         {% empty %}
@@ -37,32 +33,6 @@
         </li>
         {% endfor %}
     </ul>
-
-    {% if is_paginated %}
-    <nav class="mt-4" aria-label="ページナビゲーション">
-        <ul class="pagination justify-content-center">
-            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                <a class="page-link" href="?page=1" aria-label="最初">&laquo;</a>
-            </li>
-            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">前へ</a>
-            </li>
-
-            <li class="page-item disabled">
-          <span class="page-link">
-            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-          </span>
-            </li>
-
-            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">次へ</a>
-            </li>
-            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="最後">&raquo;</a>
-            </li>
-        </ul>
-    </nav>
-    {% endif %}
+    {% include 'notes/paging.html' %}
 </div>
-
 {% endblock content %}

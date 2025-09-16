@@ -14,7 +14,14 @@ class NoteIndex(LoginRequiredMixin, generic.ListView):
 class NoteCreate(LoginRequiredMixin, generic.CreateView):
     model = Note
     form_class = NoteForm
+    template_name = "notes/form.html"
     success_url = reverse_lazy("notes:index")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action_label"] = "新規作成"
+        context["button_label"] = "登録"
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -31,3 +38,14 @@ class NoteCreate(LoginRequiredMixin, generic.CreateView):
                     body[:160] + ("…" if len(body) > 160 else "")
             )
         return super().form_valid(form)
+
+class NoteUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Note
+    form_class = NoteForm
+    template_name = "notes/form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action_label"] = "編集"
+        context["button_label"] = "更新"
+        return context

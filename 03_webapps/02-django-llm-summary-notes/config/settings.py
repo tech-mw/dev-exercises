@@ -85,3 +85,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# login成功時リダイレクト先
+LOGIN_REDIRECT_URL = "notes:index"
+# login必須ページに未ログインでアクセスした際のリダイレクト先
+LOGIN_URL = "notes:signin"
+# logout成功時リダイレクト先
+LOGOUT_REDIRECT_URL = "notes:signin"

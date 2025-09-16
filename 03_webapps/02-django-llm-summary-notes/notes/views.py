@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
+from .models import Note
 
 
-def IndexView(request):
-    return HttpResponse('Hello, world. You are at the notes index.')
+class NoteIndex(LoginRequiredMixin, generic.ListView):
+    model = Note

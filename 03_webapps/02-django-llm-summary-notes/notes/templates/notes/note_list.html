@@ -1,2 +1,7 @@
-{% extends 'base.html' %}
-<h1>list</h1>
+{% extends 'notes/base.html' %}
+{% block content %}
+<h1>メモ一覧</h1>
+{% for note in note_list %}
+    {{note.title}}
+{% endfor %}
+{% endblock content%}

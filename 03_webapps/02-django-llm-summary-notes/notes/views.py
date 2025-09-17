@@ -9,7 +9,7 @@ from .util.summarizer import MessageOnSuccessMixin, SummaryAndMessageMixin
 
 class NoteIndex(LoginRequiredMixin, generic.ListView):
     model = Note
-    paginate_by = 10
+    paginate_by = 20
 
     def get_queryset(self):
         queryset = Note.objects.order_by('-created_at')

@@ -1,38 +1,75 @@
 {% extends 'notes/base.html' %}
-{% block content %}
 
+{% block extra_css %}
+<style>
+    /* カード風に・ホバーで少し持ち上がる */
+    .note-card{
+      border:1px solid var(--bs-border-color);
+      border-radius:1rem;
+      transition:transform .15s ease, box-shadow .15s ease;
+      background: var(--bs-body-bg);
+    }
+    .note-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 .75rem 1.5rem rgba(0,0,0,.08);
+    }
+    /* 上部にアクセントライン */
+    .note-accent{
+      position:absolute; inset:0 0 auto 0; height:4px;
+      background: var(--bs-primary); border-radius:1rem 1rem 0 0;
+    }
+    .title{ font-weight:600; }
+    /* 2行省略（要約） */
+    .line-clamp-2{
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .note-meta{ font-size:.875rem; color: var(--bs-secondary-color); }
+    .note-actions .btn{ border-radius: 999px; } /* pill */
+</style>
+{% endblock %}
+
+{% block content %}
 <div class="container py-4">
-    <ul class="list-group shadow-sm">
+
+    <div class="mb-3">
+        <h1 class="h4 mb-0">メモ一覧</h1>
+    </div>
+
+    <div class="row g-3">
         {% for note in note_list %}
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="me-3 flex-grow-1 min-w-0 overflow-hidden">
-                <a href="{% url 'notes:update' note.id %}"
-                   class="fw-semibold text-decoration-none d-block text-truncate text-break">
-                    {{ note.title }}
-                </a>
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="note-card position-relative h-100 p-3">
+                <div class="note-accent"></div>
+                <a href="{% url 'notes:update' note.id %}" class="stretched-link"></a>
+
+                <span class="badge text-bg-light me-1">件名</span>
+                <h2 class="h6 d-inline text-truncate text-break">{{ note.title }}</h2>
 
                 {% if note.summary %}
-                <p class="mb-1 text-truncate text-break">
-                    {{ note.summary }}
-                </p>
+                <div class="mt-1">
+                    <span class="badge text-bg-light me-1">要約</span>
+                    <p class="line-clamp-2 text-secondary text-break">{{ note.summary }}</p>
+                </div>
                 {% endif %}
 
-                <div class="small text-body-secondary mt-1">
-                    {{ note.created_at|date:"Y-m-d H:i" }}
+                <div class="d-flex justify-content-between align-items-center note-meta">
+                    <span>{{ note.created_at|date:"Y-m-d H:i" }}</span>
+                    <div class="note-actions d-flex gap-2">
+                        <a href="{% url 'notes:update' note.id %}" class="btn btn-sm btn-outline-primary px-3">編集</a>
+                        <a href="{% url 'notes:delete' note.id %}" class="btn btn-sm btn-outline-danger px-3">削除</a>
+                    </div>
                 </div>
             </div>
-
-            <div class="d-flex flex-shrink-0 gap-2">
-                <a href="{% url 'notes:update' note.id %}" class="btn btn-sm btn-outline-primary">編集</a>
-                <a href="{% url 'notes:delete' note.id %}" class="btn btn-sm btn-outline-danger">削除</a>
-            </div>
-        </li>
+        </div>
         {% empty %}
-        <li class="list-group-item text-body-secondary">
-            まだメモがありません。まずは「新規作成」からどうぞ。
-        </li>
+        <div class="col-12">
+            <div class="text-body-secondary text-center py-5 border rounded-3">
+                まだメモがありません。まずは「新規作成」からどうぞ。
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
+
     {% include 'notes/paging.html' %}
 </div>
 {% endblock content %}

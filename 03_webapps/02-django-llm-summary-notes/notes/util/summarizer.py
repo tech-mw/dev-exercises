@@ -1,32 +1,41 @@
+import logging
+from typing import Optional, cast, Any, Callable
+
+from django.conf import settings
+from django.http import HttpRequest
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
 from django.contrib import messages
 from django.views.generic import CreateView
 
+logger = logging.getLogger(__name__)
+
 
 class MessageOnSuccessMixin:
     """
     成功リダイレクト時にフラッシュメッセージを出すための Mixin
     """
-    success_message = None
-    success_level = messages.SUCCESS
+    request: HttpRequest
+    success_message: Optional[str] = None
+    success_level: int = messages.SUCCESS
 
     def get_success_message(self):
-        """最終的に表示するメッセージ文字列を返す。必要に応じてオーバーライド可。"""
+        """最終的に表示するメッセージ文字列を返す"""
         return self.success_message
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         """リダイレクト URL 解決前にメッセージを積む"""
         msg = self.get_success_message()
         if msg:
             messages.add_message(self.request, self.success_level, msg)
-        return super().get_success_url()
+        parent = cast(Any, super())
+        return parent.get_success_url()
 
 
 class TextSummarizer:
     """
-    sumy の TextRank を用いた簡易要約器。
+    sumy の TextRank を用いた簡易要約（抽出）
 
     Parameters
     ----------
@@ -40,13 +49,14 @@ class TextSummarizer:
     - 入力テキストが空または空白のみの場合は空文字を返す
     - sentence_count は抽出する文数。短文のときはその範囲で返る
     """
-    def __init__(self, language="japanese", algorithm=None):
+    def __init__(self, language: str = "japanese",
+                 algorithm: Optional[Callable[[], Any]] = None) -> None:
         self.language = language
         self.summarizer = algorithm() if algorithm else TextRankSummarizer()
 
     def summarize(self, text: str, sentence_count: int = 3) -> str:
         """
-        与えられたテキストを要約し、文を空白で連結して返す。
+        与えられたテキストを要約し、文を空白で連結して返す
 
         Parameters
         ----------
@@ -58,7 +68,7 @@ class TextSummarizer:
         Returns
         -------
         str
-            要約テキスト（空文字可）。
+            要約テキスト（空文字可）
         """
         if not text or not text.strip():
             return ""
@@ -68,18 +78,29 @@ class TextSummarizer:
 
 
 class SummaryAndMessageMixin:
-    """
-    Create/Update 共通で:
-      - form_valid() 内で本文から要約を作る
-      - 生成失敗時は fallback 文言/レベル(WARNING)に切り替える
-      - 成功時は Create/Update でメッセージを出し分ける
-    """
+    create_success_message:str = "作成しました。"
+    update_success_message:str = "更新しました。"
+    fallback_message:str = "要約の生成に失敗したため、本文の冒頭を保存しました。"
+    fallback_level: int = messages.WARNING
+    success_message: str
+    success_level: int
 
-    def make_summary(self, body: str) -> tuple[str, bool]:
+    @staticmethod
+    def make_summary(body: str) -> tuple[str, bool]:
+        """
+        本文 body から要約を生成する。失敗した場合は本文の冒頭120文字を返す
+        """
         try:
             summarizer = TextSummarizer(language="japanese")
             return summarizer.summarize(body or "", sentence_count=3), False
-        except Exception:
+        # 予見できる入力/設定ミス
+        except (ValueError, KeyError, TypeError) as e:
+            logger.warning("Summarizer input/config error: %s", e, exc_info=True)
+            return (body or "")[:120], True
+        except Exception as e:
+            logger.exception(f"Unexpected summarizer failure, {e}")
+            if settings.DEBUG:
+                raise
             return (body or "")[:120], True
 
     def form_valid(self, form):
@@ -88,17 +109,21 @@ class SummaryAndMessageMixin:
 
         if hasattr(form.instance, "summary"):
             form.instance.summary = summary_text or (
-                    (body or "")[:160] + ("…" if len(body) > 160 else "")
+                (body or "")[:160] + ("…" if len(body) > 160 else "")
             )
 
         if fallback_used:
-            self.success_message = self.fallback_message
-            self.success_level = self.fallback_level
+            self.success_message = getattr(self, "fallback_message",
+                                           "要約の生成に失敗したため、本文の冒頭を保存しました。")
+            self.success_level = getattr(self, "fallback_level", messages.WARNING)
         else:
             if isinstance(self, CreateView):
-                self.success_message = self.create_success_message
+                #  CreateView の場合
+                self.success_message = getattr(self, "create_success_message", "作成しました。")
             else:
-                self.success_message = self.update_success_message
+                # UpdateView の場合
+                self.success_message = getattr(self, "update_success_message", "更新しました。")
             self.success_level = messages.SUCCESS
 
-        return super().form_valid(form)
+        parent = cast(Any, super())
+        return parent.form_valid(form)

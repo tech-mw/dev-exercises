@@ -1,0 +1,39 @@
+{% extends "notes/base.html" %}
+
+{% block extra_css %}
+<style>
+  .error-wrap{min-height:60vh}
+  .error-code{font-size:clamp(3rem, 8vw, 7rem); line-height:1; font-weight:800; letter-spacing:.05em; opacity:.12}
+  .accent{height:4px; background:var(--bs-primary); border-radius:999px; opacity:.8}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container error-wrap d-flex align-items-center">
+  <div class="row justify-content-center w-100">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5 position-relative">
+          <div class="error-code position-absolute top-0 end-0 pe-3 pt-3">404</div>
+          <h1 class="h3 mb-2">ページが見つかりませんでした</h1>
+          <p class="text-body-secondary mb-4">
+            入力したURLが正しいかご確認ください。移動・削除された可能性があります。
+          </p>
+          <div class="d-flex gap-2">
+            <a href="{% url 'notes:index' %}" class="btn btn-primary">
+              トップへ戻る
+            </a>
+            <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
+              前のページへ
+            </button>
+          </div>
+          <div class="accent mt-4"></div>
+          <p class="small text-body-secondary mt-3 mb-0">
+            お手数ですが、引き続き問題が発生する場合は時間を置いて再度お試しください。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

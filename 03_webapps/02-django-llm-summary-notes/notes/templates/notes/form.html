@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">{{ action_label }}</div>
+                <div class="card-header bg-primary text-white">{{ view.action_label }}</div>
                 <div class="card-body">
                     <form method="post" novalidate>{% csrf_token %}
                         <div class="mb-3">
@@ -25,7 +25,7 @@
 
                         <div class="d-flex justify-content-end">
                             <a href="{% url 'notes:index' %}" class="btn btn-outline-secondary me-2">戻る</a>
-                            <button type="submit" class="btn btn-primary">{{ button_label }}</button>
+                            <button type="submit" class="btn btn-primary">{{ view.button_label }}</button>
                         </div>
                     </form>
                 </div>

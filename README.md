@@ -22,7 +22,8 @@ PJ/
 │          └── 01-sd-image-cli
 ├── 02_environments/
 └── 03_webapps/
-     └── 01-django-sns-priority-board
+     ├── 01-django-sns-priority-board
+     └── 02-django-llm-summary-notes
 </pre>
 ---
 ## 1. 01_basics
@@ -93,3 +94,19 @@ PJ/
   - 投稿には「タイトル・本文・画像・通知レベル」を設定可
   - 通知レベルの設定で「重要なお知らせ」など優先度が高い情報は表示が強調/目立たせる
   - 「いいね」や「既読数」機能有（簡易的）
+#### 3-2. [02-django-llm-summary-notes](03_webapps/02-django-llm-summary-notes/README.md)
+- Django（CBV） × TextRank での要約生成メモアプリ（更新予定）
+- 特徴
+  - メモの作成 / 編集 / 削除（CRUD） 
+    - 作成時：保存時に要約（抽出型）を自動生成 
+  - ページネーション（最大表示数20）
+  - フラッシュメッセージ
+  - 検索機能
+  - 認証機能 
+    - 未ログイン時は認証画面へ誘導
+  - 単体テスト（unittest）
+- 追加予定
+  - 英語→日本語の翻訳機能
+  - url貼り付けからの要約生成
+  - 生成型による要約生成
+    - など

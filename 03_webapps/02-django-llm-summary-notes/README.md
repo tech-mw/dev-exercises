@@ -101,7 +101,6 @@ $ python manage.py runserver
 │   │       ├── base.html
 │   │       ├── form.html
 │   │       ├── note_confirm_delete.html
-│   │       ├── note_detail.html
 │   │       ├── note_list.html
 │   │       ├── note_signin.html
 │   │       └── paging.html

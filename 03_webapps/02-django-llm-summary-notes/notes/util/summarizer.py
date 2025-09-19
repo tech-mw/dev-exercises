@@ -1,8 +1,9 @@
 import logging
+import langid
 from typing import Optional, cast, Any, Callable
-
 from django.conf import settings
 from django.http import HttpRequest
+from googletrans import Translator
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
@@ -11,6 +12,10 @@ from django.views.generic import CreateView
 
 logger = logging.getLogger(__name__)
 
+LANG_MAP = {
+    "ja": "japanese",
+    "en": "english",
+}
 
 class MessageOnSuccessMixin:
     """
@@ -54,27 +59,36 @@ class TextSummarizer:
         self.language = language
         self.summarizer = algorithm() if algorithm else TextRankSummarizer()
 
-    def summarize(self, text: str, sentence_count: int = 3) -> str:
+    def detect_lang(self, text: str, default: str = "ja") -> str:
         """
-        与えられたテキストを要約し、文を空白で連結して返す
-
-        Parameters
-        ----------
-        text : str
-            入力本文
-        sentence_count : int
-            抽出する最大文数
-
-        Returns
-        -------
-        str
-            要約テキスト（空文字可）
+        text の言語を判定して 'ja' or 'en' を返す。判定できない場合は default
         """
+        if not isinstance(text, str):
+            text = str(text)
+        if not text or not text.strip():
+            return default
+        code, _ = langid.classify(text)
+        return "en" if code == "en" else "ja"
+
+    def summarize_text(self, text: str, sentence_count: int = 3) -> str:
+        """
+        英語または日本語の text を要約して返す
+        """
+        if not isinstance(text, str):
+            text = str(text)
         if not text or not text.strip():
             return ""
-        parser = PlaintextParser.from_string(text, Tokenizer(self.language))
-        summary = self.summarizer(parser.document, sentence_count)
-        return " ".join(str(s) for s in summary)
+
+        lang_code = self.detect_lang(text, default="ja")
+        ja_text = text
+        if lang_code == "en":
+            # 英語 → 日本語に翻訳
+            ja_text = Translator().translate(text, src="en", dest="ja").text
+        # 要約
+        parser = PlaintextParser.from_string(ja_text, Tokenizer("japanese"))
+        summarizer = TextRankSummarizer()
+        sentences = summarizer(parser.document, max(1, sentence_count))
+        return " ".join(str(s) for s in sentences)
 
 
 class SummaryAndMessageMixin:
@@ -92,7 +106,7 @@ class SummaryAndMessageMixin:
         """
         try:
             summarizer = TextSummarizer(language="japanese")
-            return summarizer.summarize(body or "", sentence_count=3), False
+            return summarizer.summarize_text(body or "", sentence_count=3), False
         # 予見できる入力/設定ミス
         except (ValueError, KeyError, TypeError) as e:
             logger.warning("Summarizer input/config error: %s", e, exc_info=True)

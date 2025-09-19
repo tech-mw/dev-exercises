@@ -25,8 +25,6 @@ Bootstrap によるシンプルなUIを実装しています。
 
 ---
 
----
-
 ## セットアップ手順
 ```
 # 仮想環境の作成
@@ -85,7 +83,7 @@ $ pip install django pillow python-dotenv
 
 ---
 
-## 各画面例
+## スクリーンショット
 ### 新規登録画面
 ![新規登録画面](./images/signup.png)
 

@@ -1,26 +1,39 @@
-# sns-priority-board
+# django-llm-summary-notes
+Django（CBV） × TextRank での要約生成メモアプリです。
+メモには「タイトル・本文・要約」を保存でき、要約は TextRank による自動生成、Bootstrap を用いたカード型UIと フラッシュメッセージで、軽快に操作できます。
 
+---
 
+## 技術スタック
+- Backend: Django (CBV)
+- Frontend: Bootstrap 5
+- Database: SQLite (開発時)
+- Auth: Django Auth (個人用認証)
+- NLP: sumy (TextRank Summarizer)
 
 ---
 
 ## 主な機能
+### 現在の主な機能
+- メモの作成 / 編集 / 削除（CRUD） 
+  - 作成時：保存時に要約（抽出型）を自動生成
+- 一覧表示（カードレイアウト）
+  - ページネーション対応（最大表示数20）
+- フラッシュメッセージ
+- 検索機能
+- 認証機能（個人） 
+  - 未ログイン時は認証画面へ誘導
+- 単体テスト（unittest）
+### 追加予定
+- 英語→日本語の翻訳機能
+- url貼り付けからの要約生成
+- 生成型による要約生成
+- など
 
-- ユーザー登録 / ログイン / ログアウト
-- 投稿作成（タイトル / 本文 / 画像 / 通知レベル）
-- 投稿一覧表示（レベルに応じたスタイル強調）
-- 投稿詳細表示
-- 削除、更新（自身の投稿分のみ）
-- いいね機能・既読機能（簡易的）
-- Bootstrap を用いたシンプルな画面設計（UIは最低限）
-- ページング機能（投稿一覧画面内）
 ---
 
 ## 想定ユースケース
-
-
-
----
+海外の面白ガジェットなどを見つけた際のメモや翻訳、要約、会議中の議事録メモなど、**情報の取捨選択が必要なメモ管理**を想定しています。個人向け
 
 ---
 
@@ -33,7 +46,7 @@ $ python3 -m venv venv
 $ source ./venv/bin/activate
 
 # 必要なパッケージのインストール
-$ pip install django pillow python-dotenv
+$ pip install -r requirements.txt
 
 # .envファイル作成
 $ echo "SECRET_KEY='任意の文字列'" > .env
@@ -51,8 +64,6 @@ $ python3 manage.py loaddata notes/fixtures/notes_sample.json
 $ python manage.py runserver
 
 # ブラウザで http://localhost:8000/ にアクセス
-
-
 ```
 
 ---
@@ -60,70 +71,50 @@ $ python manage.py runserver
 ## 現在の構成
 <pre>
 .
-├── README
-├── manage.py
-├── media
-│ └── images
-│     ├── coffee.png
-│     └── remote.jpg
-├── snsboardapp
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── migrations
-│   │   ├── 0001_initial.py
-│   │   ├── 0002_alter_snsboardmodel_snsimage.py
-│   │   ├── 0003_alter_snsboardmodel_snsimage.py
-│   │   └── __init__.py
-│   ├── models.py
-│   ├── static
-│   │   └── style.css
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-├── snsboardproject
+├── config
 │   ├── __init__.py
 │   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
-└── templates
-    ├── base.html
-    ├── board.html
-    ├── create.html
-    ├── delete.html
-    ├── detail.html
-    ├── login.html
-    ├── signup.html
-    ├── update.html
-    └── paging.html
+├── db.sqlite3
+├── manage.py
+├── notes
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── fixtures
+│   │   └── notes_sample.json
+│   ├── forms.py
+│   ├── migrations
+│   │   ├── __init__.py
+│   │   └── 0001_initial.py
+│   ├── models.py
+│   ├── static
+│   │   └── notes
+│   │       └── css
+│   │           ├── common.css
+│   │           └── signin.css
+│   ├── templates
+│   │   ├── 404.html
+│   │   └── notes
+│   │       ├── base.html
+│   │       ├── form.html
+│   │       ├── note_confirm_delete.html
+│   │       ├── note_detail.html
+│   │       ├── note_list.html
+│   │       ├── note_signin.html
+│   │       └── paging.html
+│   ├── tests
+│   │   ├── __init__.py
+│   │   └── test_note.py
+│   ├── urls.py
+│   ├── util
+│   │  └── summarizer.py
+│   └── views.py
+├── README.md
+└── requirements.txt
 </pre>
 
----
-
-## 各画面例
-### 新規登録画面
-![新規登録画面](./images/signup.png)
-
-### ログイン画面
-![ログイン画面](./images/login.png)
-
-### 投稿一覧画面
-![投稿一覧](./images/board.png)
-
-#### ページング（投稿一覧画面内）
-![ページング](./images/paging.png)
-
-### 新規投稿画面
-![新規投稿画面](./images/create.png)
-
-### 詳細画面
-![詳細画面](./images/detail.png)
-
-### 編集画面
-![編集画面](./images/update.png)
-
-### 削除画面
-![削除画面](./images/delete.png)
-
-
+## スクリーンショット
+追加実装後に更新予定

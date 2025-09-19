@@ -22,6 +22,15 @@
                             <div class="invalid-feedback d-block">{{ form.body.errors }}</div>
                             {% endif %}
                         </div>
+                        <!-- 要約があれば表示 -->
+                        {% if note.summary %}
+                        <div class="mb-3">
+                            <label class="form-label">要約</label>
+                            <div class="form-control-plaintext bg-light border rounded p-2">
+                                {{ note.summary|linebreaksbr }}
+                            </div>
+                        </div>
+                        {% endif %}
 
                         <div class="d-flex justify-content-end">
                             <a href="{% url 'notes:index' %}" class="btn btn-outline-secondary me-2">戻る</a>

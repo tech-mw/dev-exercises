@@ -36,6 +36,7 @@ class NoteUpdate(LoginRequiredMixin, SummaryAndMessageMixin, MessageOnSuccessMix
     form_class = NoteForm
     action_label = "編集"
     button_label = "更新"
+    context_object_name = "note"
     update_success_message = "メモを更新しました。"
     template_name = "notes/form.html"
     success_url = reverse_lazy("notes:index")

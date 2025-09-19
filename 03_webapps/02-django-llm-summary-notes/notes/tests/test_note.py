@@ -94,7 +94,6 @@ class NotesTests(TestCase):
         obj = Note.objects.get(title="new title")
         self.assertEqual(obj.body, "new body")
 
-
     def test_update_success(self):
         """
         更新：成功
@@ -116,7 +115,6 @@ class NotesTests(TestCase):
         # 更新後の値が設定されていること
         self.assertEqual(obj.body, "updated body")
 
-    # 削除：成功
     def test_delete_success(self):
         """
         削除：成功

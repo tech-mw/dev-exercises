@@ -1,5 +1,5 @@
 # django-llm-summary-notes
-Django（CBV）× TextRank の要約メモアプリです。
+Django（CBV）× TextRank（抽出型）or Ollama（生成型）での要約生成メモアプリです。
 メモは「タイトル／本文／要約」を保存でき、Bootstrap製のカードUIとフラッシュメッセージで軽快に操作できます。
 要約は保存時に自動生成され、既定は TextRank（抽出型）。Ollama が起動していれば生成要約に切り替わり、未起動時は自動で抽出型へフォールバックします。
 ローカルLLM（Ollama）の Docker 運用手順も同梱しています。

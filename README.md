@@ -95,7 +95,7 @@ PJ/
   - 通知レベルの設定で「重要なお知らせ」など優先度が高い情報は表示が強調/目立たせる
   - 「いいね」や「既読数」機能有（簡易的）
 #### 3-2. [02-django-llm-summary-notes](03_webapps/02-django-llm-summary-notes/README.md)
-- Django（CBV） × TextRank での要約（生成型 or 抽出型）生成メモアプリ
+- Django（CBV）× TextRank（抽出型）or Ollama（生成型）での要約生成メモアプリ
 - 特徴
   - メモの作成 / 編集 / 削除（CRUD） 
     - 作成時：保存時に要約（生成型 or 抽出型）を自動生成 

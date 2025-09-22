@@ -1,21 +1,19 @@
 import logging
+import re
 import langid
+import ollama
 from typing import Optional, cast, Any, Callable
 from django.conf import settings
 from django.http import HttpRequest
-from googletrans import Translator
-from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
+from sumy.parsers.plaintext import PlaintextParser
 from sumy.summarizers.text_rank import TextRankSummarizer
 from django.contrib import messages
 from django.views.generic import CreateView
 
 logger = logging.getLogger(__name__)
+_JP_SENT_SPLIT = re.compile(r'(?<=[。！？])\s+')
 
-LANG_MAP = {
-    "ja": "japanese",
-    "en": "english",
-}
 
 class MessageOnSuccessMixin:
     """
@@ -26,11 +24,15 @@ class MessageOnSuccessMixin:
     success_level: int = messages.SUCCESS
 
     def get_success_message(self):
-        """最終的に表示するメッセージ文字列を返す"""
+        """
+        最終的に表示するメッセージ文字列を返す
+        """
         return self.success_message
 
     def get_success_url(self) -> str:
-        """リダイレクト URL 解決前にメッセージを積む"""
+        """
+        リダイレクト URL 解決前にメッセージを積む
+        """
         msg = self.get_success_message()
         if msg:
             messages.add_message(self.request, self.success_level, msg)
@@ -40,7 +42,7 @@ class MessageOnSuccessMixin:
 
 class TextSummarizer:
     """
-    sumy の TextRank を用いた簡易要約（抽出）
+    sumy の TextRank を用いた簡易要約
 
     Parameters
     ----------
@@ -54,6 +56,7 @@ class TextSummarizer:
     - 入力テキストが空または空白のみの場合は空文字を返す
     - sentence_count は抽出する文数。短文のときはその範囲で返る
     """
+
     def __init__(self, language: str = "japanese",
                  algorithm: Optional[Callable[[], Any]] = None) -> None:
         self.language = language
@@ -70,31 +73,56 @@ class TextSummarizer:
         code, _ = langid.classify(text)
         return "en" if code == "en" else "ja"
 
-    def summarize_text(self, text: str, sentence_count: int = 3) -> str:
+    @staticmethod
+    def _trim_to_n_sentences_jp(text: str, n: int) -> str:
         """
-        英語または日本語の text を要約して返す
+        日本語テキスト text を文で分割、最大 n 文までを連結して返す
         """
-        if not isinstance(text, str):
-            text = str(text)
-        if not text or not text.strip():
-            return ""
+        n = max(1, int(n))
+        sents = [s for s in _JP_SENT_SPLIT.split(text.strip()) if s]
+        return "".join(sents[:n]) if len(sents) >= n else "".join(sents)
 
-        lang_code = self.detect_lang(text, default="ja")
+    def _gen_summary_ja_ollama(self, ja_text: str, sentence_count: int) -> str:
+        N = max(1, int(sentence_count))
+        system = (
+            "あなたは抽象要約器です。出力は必ず自然な日本語の散文。"
+            "箇条書きや番号付けは使用しない。原文の一文をそのまま使わず必ず言い換える。"
+            "固有名詞・数値・割合・年は保持し、新情報の追加・主観・誇張は禁止。"
+            "文末は句点「。」で終える。"
+        )
+        user = (
+            f"次の日本語テキストを{N}文で要約してください。"
+            "必ずちょうど指定の文数で、散文のみで出力してください。\n\n"
+            f"{ja_text}"
+        )
+        res = ollama.chat(
+            model="qwen2.5:7b-instruct",
+            messages=[{"role": "system", "content": system},
+                      {"role": "user", "content": user}],
+            options={"num_predict": 140, "temperature": 0.2, "top_p": 0.9, "top_k": 40, "repeat_penalty": 1.1},
+            keep_alive="30m",
+            stream=False,
+        )
+        out = res["message"]["content"].strip()
+        return self._trim_to_n_sentences_jp(out, N)
+
+    def summarize_text(self, text: str, sentence_count: int = 3) -> str:
         ja_text = text
-        if lang_code == "en":
-            # 英語 → 日本語に翻訳
-            ja_text = Translator().translate(text, src="en", dest="ja").text
-        # 要約
-        parser = PlaintextParser.from_string(ja_text, Tokenizer("japanese"))
-        summarizer = TextRankSummarizer()
-        sentences = summarizer(parser.document, max(1, sentence_count))
-        return " ".join(str(s) for s in sentences)
+        try:
+            # 生成型
+            return self._gen_summary_ja_ollama(ja_text, sentence_count)
+        except Exception as e:
+            # 生成型が失敗した場合は抽出型
+            logger.warning("[ollama warn] %s 抽出型", e)
+            parser = PlaintextParser.from_string(ja_text, Tokenizer(self.language))
+            sentences = self.summarizer(parser.document, max(1, int(sentence_count)))
+            return "".join(str(s) for s in sentences)
 
 
 class SummaryAndMessageMixin:
-    create_success_message:str = "作成しました。"
-    update_success_message:str = "更新しました。"
-    fallback_message:str = "要約の生成に失敗したため、本文の冒頭を保存しました。"
+    create_success_message: str = "作成しました。"
+    update_success_message: str = "更新しました。"
+    fallback_message: str = "要約の生成に失敗したため、本文の冒頭を保存しました。"
     fallback_level: int = messages.WARNING
     success_message: str
     success_level: int
@@ -123,7 +151,7 @@ class SummaryAndMessageMixin:
 
         if hasattr(form.instance, "summary"):
             form.instance.summary = summary_text or (
-                (body or "")[:160] + ("…" if len(body) > 160 else "")
+                    (body or "")[:160] + ("…" if len(body) > 160 else "")
             )
 
         if fallback_used:
@@ -132,10 +160,8 @@ class SummaryAndMessageMixin:
             self.success_level = getattr(self, "fallback_level", messages.WARNING)
         else:
             if isinstance(self, CreateView):
-                #  CreateView の場合
                 self.success_message = getattr(self, "create_success_message", "作成しました。")
             else:
-                # UpdateView の場合
                 self.success_message = getattr(self, "update_success_message", "更新しました。")
             self.success_level = messages.SUCCESS
 

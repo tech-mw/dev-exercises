@@ -169,7 +169,7 @@ $ docker exec -it ollama free -h
 - サインイン：表示〜ログイン
 - 一覧：ページネーション
 
-<video src="https://github.com/user-attachments/assets/07e16250-6f5b-408f-aec3f88b489" width="720" controls="true"></video>
+<video src="https://github.com/user-attachments/assets/07e16250-6f5b-408f-aec3-c9963f88b489" width="720" controls="true"></video>
 
 ### デモ02
 - 一覧：表示

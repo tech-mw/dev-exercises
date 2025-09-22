@@ -1,14 +1,17 @@
 <div id="loading" class="d-none"
      style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
             background:rgba(0,0,0,.35); z-index:2000;">
-    <div class="spinner-border" role="status" aria-label="読み込み中"></div>
+    <div class="text-center">
+        <div class="spinner-border" role="status" aria-label="読み込み中"></div>
+        <div id="loading-text" class="mt-2 text-white fw-semibold">要約生成中です…</div>
+    </div>
 </div>
 <script>
-function showAndSubmit(e,f){
-  const o=document.getElementById('loading');
-  if(o){ o.classList.remove('d-none'); }
-  e.preventDefault();
-  requestAnimationFrame(()=>requestAnimationFrame(()=>f.submit()));
-}
+    function showAndSubmit(e,f){
+      const o=document.getElementById('loading');
+      if(o){ o.classList.remove('d-none'); }
+      e.preventDefault();
+      requestAnimationFrame(()=>requestAnimationFrame(()=>f.submit()));
+    }
 </script>
 

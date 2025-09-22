@@ -85,22 +85,31 @@ class TextSummarizer:
     def _gen_summary_ja_ollama(self, ja_text: str, sentence_count: int) -> str:
         N = max(1, int(sentence_count))
         system = (
-            "あなたは抽象要約器です。出力は必ず自然な日本語の散文。"
-            "箇条書きや番号付けは使用しない。原文の一文をそのまま使わず必ず言い換える。"
+            "あなたは意訳重視の要約編集者です。出力は必ず自然な日本語の散文一段落。"
+            "箇条書き・番号付け・引用は禁止。原文の語順や文をそのまま使わず必ず言い換える。"
+            "原文から連続6文字以上を再利用しない。改行は入れない。"
             "固有名詞・数値・割合・年は保持し、新情報の追加・主観・誇張は禁止。"
             "文末は句点「。」で終える。"
         )
         user = (
-            f"次の日本語テキストを{N}文で要約してください。"
-            "必ずちょうど指定の文数で、散文のみで出力してください。\n\n"
+            f"次の日本語テキストを{N}文の散文一段落に要約してください。"
+            "全体はおおよそ120〜180文字に収め、箇条書きや見出しは出力しないでください。"
+            "まず内部で要点を整理し、最終的な散文だけを出力してください。内部メモは表示しないでください。\n\n"
             f"{ja_text}"
         )
         res = ollama.chat(
             model="qwen2.5:7b-instruct",
             messages=[{"role": "system", "content": system},
                       {"role": "user", "content": user}],
-            options={"num_predict": 140, "temperature": 0.2, "top_p": 0.9, "top_k": 40, "repeat_penalty": 1.1},
-            keep_alive="30m",
+            options={
+                "num_predict": 200,
+                "temperature": 0.5,
+                "top_p": 0.95,
+                "top_k": 40,
+                "repeat_penalty": 1.15,
+                "stop": ["\n- ", "\n1.", "\n•", "\n・"]
+            },
+        keep_alive="30m",
             stream=False,
         )
         out = res["message"]["content"].strip()

@@ -111,3 +111,8 @@ PJ/
   - URL貼り付けからの要約生成
   - サインアップ（複数ユーザー利用）
   - など
+
+---
+
+### Claude Codeサンプルアプリ集
+#### [シンプルなハイ＆ローのカードゲーム](https://github.com/tech-mw/claude_code/blob/main/card-game/README.md)
